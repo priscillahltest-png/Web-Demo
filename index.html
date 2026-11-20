@@ -1,0 +1,3259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>// Pocket mode: the normal form page, but "the computer" is this phone. Entries are kept on the phone and sent
+// to monday.com (the Field entries board) whenever there is signal. Built by server.js into stock-room-pocket-form.html.
+(function () {
+    'use strict';
+    var CFG = /*POCKET_CONFIG*/null;
+    var ENC = {"salt":"Lm7BchJ2UZx1uDGfmKfKXg==","iv":"ZsVyscW6Ks07IDFC","ct":"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","made":1830476726178};     // web version: the settings, locked with a passcode
+    if (!CFG && !ENC) return;
+    var readyRes, readyP = new Promise(function (r) { readyRes = r; });
+    document.documentElement.classList.add('is-phone');
+    var mem = {};
+    function sget(k, d) { try { var v = localStorage.getItem(k); return v === null ? (k in mem ? mem[k] : d) : JSON.parse(v); } catch (e) { return k in mem ? mem[k] : d; } }
+    function sset(k, v) { mem[k] = v; try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* kept in memory only */ } }
+    var QKEY, HKEY, SKEY;
+    function begin() { QKEY = 'srPocketQueue_' + CFG.boardId; HKEY = 'srPocketSent_' + CFG.boardId; SKEY = 'srPocketState_' + CFG.boardId; }
+
+    function state() {
+        var s = sget(SKEY, null);
+        if (!s || s.made !== CFG.made) { s = JSON.parse(JSON.stringify(CFG.state)); s.made = CFG.made; sset(SKEY, s); }
+        return s;
+    }
+    function queue() { return sget(QKEY, []); }
+    function r3(n) { return Math.round(n * 1000) / 1000; }
+    function b64(s) { return btoa(unescape(encodeURIComponent(s))); }
+
+    function gql(query, variables) {
+        return fetch('https://api.monday.com/v2', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': CFG.token }, body: JSON.stringify({ query: query, variables: variables }) })
+            .then(function (r) { return r.json().then(function (j) { if (!r.ok || (j.errors && j.errors.length) || j.error_message) throw new Error((j.errors && j.errors[0] && j.errors[0].message) || j.error_message || ('HTTP ' + r.status)); return j.data; }); });
+    }
+    function save(e) { var q = queue(); for (var i = 0; i < q.length; i++) if (q[i].id === e.id) q[i] = e; sset(QKEY, q); }
+    // create the monday.com item once, then put the details on it (if that fails it is retried on its own, no duplicate item)
+    function sendOne(e) {
+        var chain = Promise.resolve(e.itemId);
+        if (!e.itemId) {
+            var nm = ('FIELD ENTRY | ' + e.type + ' | ' + e.project + ' | ' + e.items.length + ' item(s) | ' + e.by).slice(0, 250);
+            chain = gql('mutation ($b: ID!, $n: String!) { create_item(board_id: $b, item_name: $n) { id } }', { b: CFG.boardId, n: nm })
+                .then(function (d) { e.itemId = d.create_item.id; save(e); return e.itemId; });
+        }
+        return chain.then(function (id) {
+            var payload = { v: 1, id: e.id, type: e.type, project: e.project, by: e.by, time: e.time, items: e.items, form: e.form, place: CFG.place || '' };
+            return gql('mutation ($i: ID!, $b: String!) { create_update(item_id: $i, body: $b) { id } }', { i: id, b: 'POCKETv1:' + b64(JSON.stringify(payload)) });
+        });
+    }
+
+    var sending = false, note = '';
+    function sendAll() {
+        if (sending) return Promise.resolve();
+        var q = queue(); if (!q.length) { bar(); return Promise.resolve(); }
+        sending = true; note = 'Sending...'; bar();
+        var failed = null;
+        return q.reduce(function (p, e) {
+            return p.then(function () {
+                if (failed) return;
+                return sendOne(e).then(function () {
+                    sset(QKEY, queue().filter(function (x) { return x.id !== e.id; }));
+                    var h = sget(HKEY, []); h.unshift({ sent: Date.now() }); sset(HKEY, h.slice(0, 5));
+                }, function (err) { failed = err; });
+            });
+        }, Promise.resolve()).then(function () {
+            sending = false;
+            note = failed ? 'No signal or not sent yet. Saved on this phone, it will be sent automatically.' : '';
+            bar();
+        });
+    }
+
+    // ---- what the form page asks "the computer" ----
+    window.__pocketApi = async function (method, url, body) {
+        await readyP;
+        if (method === 'GET' && url === '/api/state') { var s = state(); s.passwordSet = true; s.lan = []; return s; }
+        if (method === 'POST' && url === '/api/submit') {
+            var s2 = state(), isReturn = body.formType === 'Return';
+            if (!isReturn) {   // same rule as the stock room computer: a delivery cannot take out more than there is
+                var short = [];
+                (body.items || []).forEach(function (i) { var have = s2.stock[i.name] || 0; if (Number(i.quantity) > have) short.push(i.name + ': need ' + i.quantity + ', have ' + have); });
+                if (short.length) { var er = new Error('Not enough stock. Nothing was saved:\n' + short.join('\n')); er.status = 409; er.data = { error: er.message }; throw er; }
+            }
+            var entry = {
+                id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8),
+                type: isReturn ? 'Return' : 'Delivery', project: String(body.projectName || ''), by: String(body.collectedBy || ''), time: Date.now(),
+                items: (body.items || []).map(function (i) { return { name: i.name, qty: i.quantity }; }), form: body.form
+            };
+            var q = queue(); q.push(entry); sset(QKEY, q);
+            entry.items.forEach(function (i) { s2.stock[i.name] = r3(Math.max(0, (s2.stock[i.name] || 0) + (isReturn ? 1 : -1) * Number(i.qty))); });
+            s2.version = (s2.version || 0) + 1; s2.savedAt = Date.now(); sset(SKEY, s2);
+            note = 'Saved on this phone.'; bar();
+            setTimeout(sendAll, 50);
+            var out = JSON.parse(JSON.stringify(s2)); out.ok = true; out.logged = true; out.printer = 'skipped'; out.pdf = 'pocket';
+            return out;
+        }
+        var err = new Error('This is not available in the pocket form.'); err.status = 403; throw err;
+    };
+
+    // ---- a small bar at the bottom ----
+    var barEl = null;
+    function bar() {
+        if (!document.body || !CFG) return;
+        if (!barEl) {
+            barEl = document.createElement('div');
+            barEl.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:9999;padding:8px 12px;font:600 14px sans-serif;text-align:center;background:#1b2430;color:#fff;display:none';
+            document.body.appendChild(barEl);
+        }
+        var q = queue(), h = sget(HKEY, []);
+        var txt = '';
+        if (q.length) txt = '⏳ ' + q.length + ' entr' + (q.length === 1 ? 'y' : 'ies') + ' waiting to send. ' + (note || '');
+        else if (note) txt = note;
+        else if (h.length) txt = '✓ Last entry sent ' + new Date(h[0].sent).toLocaleString();
+        barEl.innerHTML = '';
+        barEl.appendChild(document.createTextNode(txt + ' '));
+        if (q.length && !sending) {
+            var b = document.createElement('button'); b.textContent = 'Send now'; b.style.cssText = 'margin-left:6px;padding:5px 12px;border-radius:8px;border:0;font:700 13px sans-serif';
+            b.onclick = function () { sendAll(); }; barEl.appendChild(b);
+        }
+        barEl.style.display = txt ? 'block' : 'none';
+        document.body.style.paddingBottom = txt ? '48px' : '';
+    }
+    function go() { begin(); readyRes(); bar(); if (queue().length) sendAll(); }
+    document.addEventListener('DOMContentLoaded', function () { if (CFG) { bar(); if (queue().length) sendAll(); } });
+    window.addEventListener('online', function () { if (CFG) sendAll(); });
+    setInterval(function () { if (CFG && !sending && queue().length) sendAll(); }, 60000);
+
+    // ---- web version: unlock with the passcode ----
+    function ub(s) { var b = atob(s), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+    function decrypt(pass) {
+        var enc = new TextEncoder();
+        return crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']).then(function (k) {
+            return crypto.subtle.deriveKey({ name: 'PBKDF2', salt: ub(ENC.salt), iterations: 200000, hash: 'SHA-256' }, k, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+        }).then(function (key) {
+            return crypto.subtle.decrypt({ name: 'AES-GCM', iv: ub(ENC.iv) }, key, ub(ENC.ct));
+        }).then(function (buf) { var c = JSON.parse(new TextDecoder().decode(buf)); c.made = ENC.made; return c; });
+    }
+    function lockScreen() {
+        var box = document.createElement('div');
+        box.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#1b2430;color:#fff;display:flex;align-items:center;justify-content:center;font-family:sans-serif;padding:20px';
+        box.innerHTML = '<form style="max-width:340px;width:100%;text-align:center"><h2 style="margin:0 0 8px">Stock Room Form</h2><p style="margin:0 0 16px;color:#cbd5e1">Type the passcode you were given. You only need to do this once on this phone.</p>' +
+            '<input type="password" autocomplete="current-password" style="width:100%;box-sizing:border-box;font-size:18px;padding:12px;border-radius:8px;border:0;margin-bottom:10px" placeholder="Passcode">' +
+            '<button style="width:100%;font-size:18px;padding:12px;border-radius:8px;border:0;font-weight:700">Open</button><p class="m" style="color:#fca5a5;min-height:22px"></p></form>';
+        var f = box.firstChild, inp = f.querySelector('input'), m = f.querySelector('.m');
+        f.onsubmit = function (ev) {
+            ev.preventDefault(); m.style.color = '#cbd5e1'; m.textContent = 'Checking...';
+            decrypt(inp.value).then(function (c) { try { localStorage.setItem('srPocketPass', inp.value); } catch (e) { /* ignore */ } CFG = c; box.remove(); go(); },
+                function () { m.style.color = '#fca5a5'; m.textContent = 'Wrong passcode.'; });
+        };
+        function add() { document.body.appendChild(box); inp.focus(); }
+        if (document.body) add(); else document.addEventListener('DOMContentLoaded', add);
+    }
+    if (CFG) go();
+    else {
+        if (!window.crypto || !crypto.subtle) { document.addEventListener('DOMContentLoaded', function () { document.body.innerHTML = '<p style="font:18px sans-serif;padding:24px">This page must be opened from its https:// address.</p>'; }); return; }
+        var saved = null; try { saved = localStorage.getItem('srPocketPass'); } catch (e) { /* ignore */ }
+        (saved ? decrypt(saved).catch(function () { return null; }) : Promise.resolve(null)).then(function (c) { if (c) { CFG = c; go(); } else lockScreen(); });
+        if ('serviceWorker' in navigator) window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () { /* works without it, just not offline */ }); });
+    }
+})();
+</script>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Stock Room"><meta name="theme-color" content="#1b2430">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Stock Room Pocket Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .form-container {
+            background: #ffffff;
+            width: 100%;
+            padding: 50px 60px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 26px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin: 0;
+            color: #000;
+        }
+
+        /* Delivery / Return switch */
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .mode-btn {
+            min-height: 44px;
+            min-width: 120px;
+            padding: 0 18px;
+            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mode-btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .mode-btn:last-child {
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+        }
+
+        .mode-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Metadata Information Section */
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 35px;
+            font-size: 13px;
+        }
+
+        .info-column {
+            width: 48%;
+        }
+
+        .info-row {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .info-label {
+            font-weight: normal;
+            color: #000;
+            width: 110px;
+            flex-shrink: 0;
+        }
+
+        .info-input {
+            flex-grow: 1;
+            min-width: 0;
+            border: none;
+            border-bottom: 1px dashed #999;
+            border-radius: 0;
+            padding: 2px 5px;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            outline: none;
+            background: transparent;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Project Name wraps onto more lines so the whole name is always visible */
+        textarea.info-input {
+            resize: none;
+            overflow: hidden;
+            line-height: 1.3;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            display: block;
+        }
+
+        /* Materials Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            margin-bottom: 45px;
+        }
+
+        th {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            text-align: left;
+            background-color: #fff;
+        }
+
+        th.col-qty { width: 8%; }
+        th.col-materials { width: 48%; }
+        th.col-loaded { width: 11%; }
+        th.col-not-delivered { width: 17%; }
+        th.col-accepted { width: 16%; }
+
+        td {
+            border: 1px solid #000;
+            height: 28px;
+            padding: 0 5px;
+            vertical-align: middle;
+        }
+
+        td input[type="text"] {
+            width: 100%;
+            height: 100%;
+            min-height: 26px;
+            border: none;
+            border-radius: 0;
+            outline: none;
+            font-size: 13px;
+            font-family: Arial, sans-serif;
+            background: transparent;
+            padding: 0;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Materials wraps onto more lines so the whole item name is always visible (like Project Name) */
+        td textarea.mat-input {
+            display: block;
+            width: 100%;
+            min-height: 26px;
+            border: none;
+            border-radius: 0;
+            outline: none;
+            resize: none;
+            overflow: hidden;
+            font-size: 13px;
+            line-height: 1.25;
+            font-family: Arial, sans-serif;
+            background: transparent;
+            padding: 5px 0;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* Interactive Check Cells */
+        .check-cell {
+            cursor: pointer;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.1s ease;
+        }
+
+        .check-cell:active {
+            background-color: #f1f1f1;
+        }
+
+        .check-cell.checked {
+            color: #28a745;
+        }
+
+        /* Footer Signatures */
+        .footer-signatures {
+            display: grid;
+            grid-template-columns: repeat(3, 30%);
+            justify-content: space-between;
+            row-gap: 14px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .sig-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sig-collected  { grid-column: 2; grid-row: 1; }
+        .sig-inspected  { grid-column: 1; grid-row: 2; }
+        .sig-delivered  { grid-column: 2; grid-row: 2; }
+        .sig-accepted   { grid-column: 3; grid-row: 2; }
+
+        .sig-line {
+            border-bottom: 1px solid #000;
+            margin-bottom: 8px;
+            height: 30px;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 4px 2px;
+            font-size: 15px;
+            font-weight: normal;
+            letter-spacing: 0;
+            color: #000;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Submit area */
+        .submit-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .submit-btn {
+            width: 100%;
+            max-width: 360px;
+            min-height: 52px;
+            border: none;
+            border-radius: 8px;
+            background: #0b6bcb;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .submit-btn:active {
+            background: #0a58a8;
+        }
+
+        .submit-btn:disabled {
+            background: #9aa7b4;
+            cursor: default;
+        }
+
+        .submit-note {
+            margin: 10px 0 0;
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* Stock room inventory */
+        .inventory {
+            background: #fff;
+            margin-top: 20px;
+            padding: 30px 60px 36px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .inventory h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .inventory-note {
+            margin: 0 0 22px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+        }
+
+        .inv-heading {
+            margin: 18px 0 4px;
+            padding: 6px 0;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #555;
+            border-bottom: 2px solid #000;
+        }
+
+        .inv-search { width: 100%; box-sizing: border-box; height: 44px; margin: 10px 0 4px; padding: 0 12px; font-size: 16px; border: 1px solid #999; border-radius: 8px; }
+        .inv-heading.inv-cat { cursor: pointer; user-select: none; }
+        .inv-hl { background: #ffd1dc; color: #000; font-weight: bold; padding: 0; }
+
+        .inv-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-height: 54px;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+
+        .inv-name {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .inv-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inv-count {
+            width: 90px;
+            height: 48px;
+            border: 1px solid #999;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .inv-count.changed {
+            background: #eaf3ff;
+            border-color: #0b6bcb;
+            color: #0b6bcb;
+        }
+
+        .inv-count.negative {
+            background: #fdeceb;
+            border-color: #b3261e;
+            color: #b3261e;
+        }
+
+        .storage-status {
+            margin: -12px 0 18px;
+            font-size: 12px;
+            text-align: center;
+            color: #1e7b34;
+        }
+
+        .storage-status.warn {
+            color: #b3261e;
+            font-weight: bold;
+        }
+
+        .backup-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 26px;
+        }
+
+        .backup-btn {
+            min-height: 44px;
+            padding: 0 16px;
+            border: 1px solid #999;
+            border-radius: 8px;
+            background: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .backup-btn:active {
+            background: #eef6ff;
+        }
+
+        /* Password dialog */
+        .pw-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .pw-modal.open {
+            display: flex;
+        }
+
+        /* Add / Remove window: it stays open until Done, and the page above it stays usable */
+        #itemModal {
+            background: transparent;
+            pointer-events: none;
+            align-items: flex-end;
+        }
+        #itemModal .pw-box {
+            pointer-events: auto;
+            max-height: 62vh;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.35);
+            border: 1px solid #bbb;
+        }
+        body.item-open { padding-bottom: 62vh; }
+
+        .pw-box input, .pw-box textarea, .pw-box select { cursor: auto; }
+        .pw-box button { cursor: pointer; }
+        .pw-title, .pw-box h3 { touch-action: none; }
+        .pw-box {
+            width: 100%;
+            max-width: 380px;
+            padding: 22px 20px 20px;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            max-height: calc(100vh - 32px);
+            overflow-y: auto;
+        }
+
+        .pw-title {
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .pw-msg {
+            margin: 0 0 14px;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        .pw-input {
+            display: block;
+            width: 100%;
+            min-height: 48px;
+            margin-bottom: 10px;
+            padding: 0 12px;
+            border: 1px solid #999;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        .pw-error {
+            min-height: 20px;
+            margin: 0 0 10px;
+            font-size: 13px;
+            color: #b3261e;
+        }
+
+        .pw-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .pw-actions button {
+            flex: 1;
+            min-height: 48px;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pw-ok {
+            border: none;
+            background: #0b6bcb;
+            color: #fff;
+        }
+
+        .pw-ok:disabled {
+            background: #9aa7b4;
+        }
+
+        .pw-cancel {
+            border: 1px solid #999;
+            background: #fff;
+            color: #000;
+        }
+
+        .pw-done {
+            border: 1px solid #1e7b34;
+            background: #fff;
+            color: #1e7b34;
+        }
+
+        /* Add / remove items */
+        /* phones and tablets can use the form but not the admin buttons */
+        html.is-phone .manage-row,
+        html.is-phone .backup-row,
+        html.is-phone .admin-note { display: none; }
+        /* the stock numbers are shown grayed out on phones: they cannot be typed over */
+        html.is-phone .inv-count,
+        html.is-phone .inv-count.changed,
+        html.is-phone .inv-count.negative {
+            background: #e6e6e6;
+            border-color: #c4c4c4;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .lock-note { font-size: 12px; color: #666; text-align: center; margin: 6px 0 10px; }
+        .inventory.locked .inv-count,
+        .inventory.locked .inv-count.changed,
+        .inventory.locked .inv-count.negative {
+            background: #e6e6e6;
+            border-color: #c4c4c4;
+            color: #777;
+            cursor: not-allowed;
+        }
+        .manage-btn.active { background: #fff3cd; border-color: #b58105; color: #7a5600; }
+
+        .manage-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 0 6px;
+        }
+
+        .manage-btn {
+            min-height: 44px;
+            padding: 0 18px;
+            border: 1px solid #0b6bcb;
+            border-radius: 8px;
+            background: #fff;
+            color: #0b6bcb;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .manage-btn.danger {
+            border-color: #b3261e;
+            color: #b3261e;
+        }
+
+        .manage-btn:active {
+            background: #eef6ff;
+        }
+
+        .item-label {
+            display: block;
+            margin: 0 0 6px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        select.pw-input {
+            background: #fff;
+        }
+
+        .pw-input:disabled {
+            background: #f1f1f1;
+            color: #999;
+        }
+
+        .pw-ok.danger {
+            background: #b3261e;
+        }
+
+        .item-list {
+            max-height: 200px;
+            margin-bottom: 10px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .item-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .item-option:last-child {
+            border-bottom: none;
+        }
+
+        .item-option input[type="radio"] {
+            margin: 0;
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .item-empty {
+            padding: 14px 12px;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .inv-empty {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* Toast */
+        .toast {
+            display: none;
+            position: fixed;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 28px);
+            max-width: 460px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            background: #1e7b34;
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.4;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            white-space: pre-line;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.error {
+            background: #b3261e;
+        }
+
+
+        /* ---------- Name picker (bottom sheet) ---------- */
+        .sheet-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 900;
+        }
+
+        .sheet-backdrop.open {
+            display: block;
+        }
+
+        .sheet {
+            display: none;
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            background: #fff;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
+            z-index: 901;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .sheet.open {
+            display: block;
+        }
+
+        .sheet-title {
+            padding: 16px 18px 10px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #666;
+            text-align: center;
+        }
+
+        .sheet-option {
+            display: block;
+            width: 100%;
+            min-height: 52px;
+            padding: 14px 18px;
+            border: none;
+            border-top: 1px solid #eee;
+            background: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            text-align: left;
+            color: #000;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .sheet-option:active {
+            background: #eef6ff;
+        }
+
+        .sheet-option.clear {
+            color: #999;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        /* ---------- Materials suggestion popup ---------- */
+        .mat-menu {
+            display: none;
+            position: absolute;
+            background: #fff;
+            border: 1px solid #999;
+            border-radius: 8px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            z-index: 800;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            font-size: 16px;
+        }
+
+        .mat-menu.open {
+            display: block;
+        }
+
+        .mat-heading {
+            background: #f0f0f0;
+            padding: 7px 12px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #555;
+        }
+
+        .mat-cat { cursor: pointer; user-select: none; padding: 11px 12px; }
+        .mat-hl { background: #ffd1dc; color: #000; font-weight: bold; padding: 0; }
+
+        .mat-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mat-option:active {
+            background: #eef6ff;
+        }
+
+        .mat-option input[type="radio"] {
+            margin: 0;
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .mat-empty {
+            padding: 14px 12px;
+            color: #999;
+        }
+
+        /* ---------- Phones / small screens ---------- */
+        @media (max-width: 640px) {
+            body {
+                padding: 0;
+                display: block;
+            }
+
+            .form-container {
+                padding: 22px 14px 28px;
+                box-shadow: none;
+            }
+
+            .inventory {
+                margin-top: 14px;
+                padding: 24px 14px 30px;
+                box-shadow: none;
+            }
+
+            .header {
+                margin-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+
+            .mode-toggle {
+                margin-bottom: 22px;
+            }
+
+            .mode-btn {
+                flex: 1;
+                min-width: 0;
+                max-width: 180px;
+            }
+
+            .info-section {
+                flex-direction: column;
+                margin-bottom: 22px;
+                font-size: 15px;
+            }
+
+            .info-column {
+                width: 100%;
+            }
+
+            .info-row {
+                align-items: center;
+                margin-bottom: 8px;
+            }
+
+            .info-label {
+                width: 108px;
+            }
+
+            /* 16px prevents iOS from zooming in on focus */
+            .info-input {
+                font-size: 16px;
+                min-height: 38px;
+                padding: 4px 6px;
+            }
+
+            table {
+                margin-bottom: 30px;
+            }
+
+            th {
+                font-size: 10px;
+                padding: 6px 3px;
+                word-wrap: break-word;
+            }
+
+            th.col-qty { width: 15%; }
+            th.col-materials { width: 37%; }
+            th.col-loaded { width: 15%; }
+            th.col-not-delivered { width: 18%; }
+            th.col-accepted { width: 15%; }
+
+            td {
+                height: 46px;
+                padding: 0 3px;
+            }
+
+            td input[type="text"] {
+                font-size: 16px;
+                min-height: 44px;
+            }
+
+            td textarea.mat-input {
+                font-size: 16px;
+                min-height: 44px;
+                padding: 12px 0;
+            }
+
+            .check-cell {
+                font-size: 22px;
+            }
+
+            .footer-signatures {
+                grid-template-columns: 1fr;
+                row-gap: 0;
+                margin-top: 10px;
+            }
+
+            .footer-signatures .sig-collected { order: -1; }
+
+            .footer-signatures .sig-block {
+                grid-column: auto;
+                grid-row: auto;
+                width: 100%;
+                margin-bottom: 22px;
+            }
+
+            .sig-line {
+                height: 46px;
+                font-size: 18px;
+                padding-bottom: 4px;
+            }
+        }
+
+        /* ---------- Print ---------- */
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+                display: block;
+            }
+
+            .form-container {
+                box-shadow: none;
+                padding: 20px 30px;
+                width: 100%;
+            }
+
+            .info-input {
+                border-bottom: 1px solid #000;
+            }
+
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                display: none;
+            }
+
+            .sheet,
+            .sheet-backdrop,
+            .mat-menu,
+            .mode-toggle,
+            .submit-area,
+            .inventory,
+            .pw-modal,
+            .toast {
+                display: none !important;
+            }
+
+            .check-cell.checked {
+                color: #28a745 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+
+<div class="form-container" id="formContainer">
+
+    <div class="header">
+        <h1 id="formTitle">Delivery Form</h1>
+    </div>
+
+    <!-- Delivery / Return switch -->
+    <div class="mode-toggle" role="group" aria-label="Form type">
+        <button type="button" class="mode-btn active" id="modeDelivery" data-mode="delivery">Delivery</button>
+        <button type="button" class="mode-btn" id="modeReturn" data-mode="return">Return</button>
+    </div>
+
+    <div class="info-section">
+        <div class="info-column">
+            <div class="info-row">
+                <span class="info-label">Project Name:</span>
+                <textarea class="info-input" id="projectNameInput" rows="1" autocomplete="off" spellcheck="false"></textarea>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Order Date:</span>
+                <input type="date" class="info-input" id="orderDateInput">
+            </div>
+            <div class="info-row">
+                <span class="info-label">Delivery Date:</span>
+                <input type="date" class="info-input">
+            </div>
+            <div class="info-row">
+                <span class="info-label">Site Foreman:</span>
+                <input type="text" class="info-input" autocomplete="off">
+            </div>
+        </div>
+        <div class="info-column">
+            <div class="info-row">
+                <span class="info-label">Address:</span>
+                <input type="text" class="info-input" autocomplete="street-address">
+            </div>
+            <div class="info-row">
+                <span class="info-label">Phone:</span>
+                <input type="tel" class="info-input" id="phoneInput" inputmode="tel" placeholder="123-456-7890" autocomplete="tel">
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="col-qty">QTY</th>
+                <th class="col-materials">Materials</th>
+                <th class="col-loaded">Loaded</th>
+                <th class="col-not-delivered">Not Delivered</th>
+                <th class="col-accepted">Accepted</th>
+            </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+    </table>
+
+    <div class="footer-signatures">
+        <div class="sig-block sig-inspected">
+            <div class="sig-line" role="button" tabindex="0" aria-label="Select inspector"></div>
+            <span class="sig-label">INSPECTED BY:</span>
+        </div>
+        <div class="sig-block sig-collected">
+            <div class="sig-line" role="button" tabindex="0" aria-label="Select who collected the items"></div>
+            <span class="sig-label">ITEMS WERE COLLECTED BY:</span>
+        </div>
+        <div class="sig-block sig-delivered">
+            <div class="sig-line" role="button" tabindex="0" aria-label="Select deliverer"></div>
+            <span class="sig-label">DELIVERED BY:</span>
+        </div>
+        <div class="sig-block sig-accepted">
+            <div class="sig-line" role="button" tabindex="0" aria-label="Select accepter"></div>
+            <span class="sig-label">ACCEPTED BY:</span>
+        </div>
+    </div>
+
+    <!-- Submit to inventory -->
+    <div class="submit-area">
+        <button type="button" class="submit-btn" id="submitBtn">Submit Delivery Form</button>
+        <p class="submit-note" id="submitNote"></p>
+    </div>
+
+</div>
+
+<!-- Stock room inventory -->
+<div class="inventory" id="inventory">
+    <h2><span id="hoverStock">Stock</span> Room</h2>
+    <p class="inventory-note">The number updates as you enter a QTY: a Delivery Form subtracts it, a Return Form adds it. <span class="admin-note">The stock numbers are locked (gray). Click Add Category &amp; item or Remove Category &amp; item and enter the password to unlock them and change the list; click either button again to lock them. </span>These stock numbers are as of the day this pocket form was made and only move with your own entries. <span class="admin-note">Add / Remove Category &amp; item and the backup buttons all use the same backup password.</span></p>
+    <p class="storage-status" id="storageStatus"></p>
+    <div class="manage-row">
+        <button type="button" class="manage-btn" id="addItemBtn">+ Add Category &amp; item</button>
+        <button type="button" class="manage-btn danger" id="removeItemBtn">&minus; Remove Category &amp; item</button>
+    </div>
+    <div class="manage-row">
+        <button type="button" class="manage-btn" id="addProjBtn">+ Add Project Name</button>
+        <button type="button" class="manage-btn danger" id="removeProjBtn">&minus; Remove Project Name</button>
+    </div>
+    <p class="lock-note admin-note" id="lockNote"></p>
+    <input type="text" id="invSearch" class="inv-search" placeholder="Type to find a stock room item (e.g. c)" autocomplete="off" autocapitalize="off">
+    <div id="inventoryList"></div>
+    <div class="backup-row">
+        <button type="button" class="backup-btn" id="backupBtn">Save locked backup on the computer</button>
+        <button type="button" class="backup-btn" id="restoreBtn">Restore locked backup</button>
+    </div>
+</div>
+
+</div>
+
+<!-- Password dialog for the backup lock -->
+<div class="pw-modal" id="pwModal" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <div class="pw-box">
+        <h3 class="pw-title" id="pwTitle"></h3>
+        <p class="pw-msg" id="pwMsg"></p>
+        <input type="password" class="pw-input" id="pwInput" placeholder="Password" autocomplete="off">
+        <input type="password" class="pw-input" id="pwInput2" placeholder="Confirm password" autocomplete="off">
+        <p class="pw-error" id="pwError" role="alert"></p>
+        <div class="pw-actions">
+            <button type="button" class="pw-cancel" id="pwCancel">Cancel</button>
+            <button type="button" class="pw-ok" id="pwOk">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- Project Name list dialog (only edits the Project Name choices) -->
+<div class="pw-modal" id="projModal" role="dialog" aria-modal="true" aria-labelledby="projTitle">
+    <div class="pw-box" style="max-width:560px">
+        <h3 class="pw-title" id="projTitle">Project Names</h3>
+        <p class="pw-msg">These are the choices in the Project Name box on every phone and computer.</p>
+        <div id="projList" style="max-height:260px;overflow-y:auto;margin-bottom:8px"></div>
+        <label class="item-label" for="projNew" id="projNewLabel">New project name</label>
+        <input type="text" class="pw-input" id="projNew" placeholder="e.g. T27-001 - Job name - 2027-0001-HT" maxlength="200" autocomplete="off">
+        <p class="pw-error" id="projMsg" role="alert"></p>
+        <div class="pw-actions">
+            <button type="button" class="pw-done" id="projDone">Done</button>
+            <button type="button" class="pw-ok" id="projAdd">Add</button>
+        </div>
+    </div>
+</div>
+
+<!-- Names dialog (hidden: hover over the word Stock for 10 seconds, on a computer) -->
+<div class="pw-modal" id="nameModal" role="dialog" aria-modal="true" aria-labelledby="nameTitle">
+    <div class="pw-box">
+        <h3 class="pw-title" id="nameTitle">Names for the signature lines</h3>
+        <p class="pw-msg">These names appear under INSPECTED BY, ITEMS WERE COLLECTED BY, DELIVERED BY and ACCEPTED BY on every phone and computer.</p>
+        <div id="nameList" style="max-height:220px;overflow-y:auto;margin-bottom:8px"></div>
+        <input type="text" class="pw-input" id="nameNew" placeholder="New name" maxlength="40" autocomplete="off">
+        <p class="pw-error" id="nameMsg" role="alert"></p>
+        <div class="pw-actions">
+            <button type="button" class="pw-cancel" id="nameDone">Done</button>
+            <button type="button" class="pw-ok" id="nameAdd">Add name</button>
+        </div>
+    </div>
+</div>
+
+<!-- Low-stock level per item (hidden: on a computer, move the mouse up out of the page and keep it there for 10 seconds) -->
+<div class="pw-modal" id="thrModal" role="dialog" aria-modal="true" aria-labelledby="thrTitle">
+    <div class="pw-box" style="max-width:560px">
+        <h3 class="pw-title" id="thrTitle">Low-stock level for each item</h3>
+        <p class="pw-msg">When an item's stock drops to this number or fewer, the sticky note and the alerts go off and monday.com marks it red. Leave a box empty to use the default level (<span id="thrDefault"></span>).</p>
+        <div id="thrList" style="max-height:300px;overflow-y:auto;margin-bottom:8px"></div>
+        <p class="pw-error" id="thrMsg" role="alert"></p>
+        <div class="pw-actions">
+            <button type="button" class="pw-cancel" id="thrCancel">Cancel</button>
+            <button type="button" class="pw-ok" id="thrSave">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add / remove item dialog -->
+<div class="pw-modal" id="itemModal" role="dialog" aria-modal="true" aria-labelledby="itemTitle">
+    <div class="pw-box">
+        <h3 class="pw-title" id="itemTitle"></h3>
+        <label class="item-label" for="itemCategory">1. Choose a category</label>
+        <select class="pw-input" id="itemCategory"></select>
+        <input type="text" class="pw-input" id="itemNewCat" placeholder="New category name, e.g. Paint" maxlength="60" autocomplete="off" style="display:none">
+        <div id="itemAddFields">
+            <label class="item-label" for="itemName" id="itemNameLabel">2. Item name</label>
+            <input type="text" class="pw-input" id="itemName" placeholder="e.g. Hammer" maxlength="60" autocomplete="off" disabled>
+            <label class="item-label" for="itemStart">Starting count (optional)</label>
+            <input type="text" class="pw-input" id="itemStart" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="0" autocomplete="off" disabled>
+        </div>
+        <div id="itemRemoveFields">
+            <div class="item-label">2. Choose the item to remove</div>
+            <div class="item-list" id="itemList"></div>
+        </div>
+        <p class="pw-error" id="itemMsg" role="alert"></p>
+        <div class="pw-actions">
+            <button type="button" class="pw-done" id="itemDone">Done</button>
+            <button type="button" class="pw-ok" id="itemOk">Add item</button>
+        </div>
+    </div>
+</div>
+
+<!-- Message banner -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- Name picker sheet -->
+<div class="sheet-backdrop" id="sheetBackdrop"></div>
+<div class="sheet" id="nameSheet" role="dialog" aria-modal="true">
+    <div class="sheet-title" id="sheetTitle"></div>
+    <div id="sheetList"></div>
+</div>
+
+<script>
+    // Mark phones and tablets so the admin buttons stay hidden.
+    try {
+        if (/Android|iPhone|iPad|iPod|Mobile|Windows Phone|BlackBerry|Opera Mini|Silk/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1)) document.documentElement.classList.add('is-phone');
+    } catch (e) { /* ignore */ }
+    // =====================================================================
+    // This page talks to the stock room computer (server.js).
+    // Stock counts, the item list, audit logs and locked backups are all kept
+    // on that computer. Nothing is stored in, or downloaded to, this device.
+    // =====================================================================
+    let MATERIAL_CATALOG = {};     // category -> [items], sent by the server
+    const stock = {};              // item -> count, sent by the server
+    let serverVersion = 0;
+    let serverSavedAt = null;
+    let passwordSet = false;
+    let connected = false;
+    let everLoaded = false;
+
+    // ---------- Build the 15 table rows (Enter in the last row adds one more, up to 100) ----------
+    const tbody = document.getElementById('rows');
+    const START_ROWS = 15, MAX_ROWS = 100;
+    function newRow() {
+        const tr = document.createElement('tr');
+        tr.innerHTML =
+            '<td><input type="text" class="qty-input" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false"></td>' +
+            '<td><textarea class="mat-input" rows="1" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea></td>' +
+            '<td class="check-cell"></td>' +
+            '<td class="check-cell"></td>' +
+            '<td class="check-cell"></td>';
+        tbody.appendChild(tr);
+        return tr;
+    }
+    for (let i = 0; i < START_ROWS; i++) newRow();
+    // Enter (or Return on a phone) in the last row, once it has something in it, adds one more row and moves to it
+    function rowHasText(tr) { return !!(tr.querySelector('.qty-input').value.trim() || tr.querySelector('.mat-input').value.trim()); }
+    function addRowAfterEnter(input) {
+        const tr = input.closest('tr');
+        if (!tr || tr !== tbody.lastElementChild || !rowHasText(tr)) return false;
+        if (tbody.children.length >= MAX_ROWS) { showToast('The form can hold up to ' + MAX_ROWS + ' rows.', true); return true; }
+        const nr = appendRow();
+        const q = nr.querySelector('.qty-input');
+        q.focus();
+        if (q.scrollIntoView) q.scrollIntoView({ block: 'center' });
+        return true;
+    }
+    function appendRow() {
+        const nr = newRow();
+        bindQty(nr.querySelector('.qty-input'));
+        bindMat(nr.querySelector('.mat-input'));
+        return nr;
+    }
+    // When the last row is complete (QTY, an item from the list and a check mark), one more row appears by itself
+    function autoAddRow() {
+        const tr = tbody.lastElementChild;
+        if (!tr || tbody.children.length >= MAX_ROWS) return;
+        if (!(qtyNum(tr.querySelector('.qty-input').value) > 0)) return;
+        if (!findCatalogItem(tr.querySelector('.mat-input').value)) return;
+        if (!tr.querySelector('.check-cell.checked')) return;
+        appendRow();
+    }
+
+    // The Materials boxes grow to show the whole item name
+    function fitMat(t) { t.style.height = 'auto'; t.style.height = Math.max(t.scrollHeight, 0) + 'px'; }
+    function fitAllMat() { document.querySelectorAll('.mat-input').forEach(fitMat); }
+    window.addEventListener('resize', fitAllMat);
+    window.addEventListener('load', fitAllMat);
+
+    // ---------- Today's date as the default Order Date ----------
+    (function () {
+        const t = new Date();
+        const y = t.getFullYear();
+        const m = String(t.getMonth() + 1).padStart(2, '0');
+        const d = String(t.getDate()).padStart(2, '0');
+        document.getElementById('orderDateInput').value = y + '-' + m + '-' + d;
+    })();
+
+    // ---------- Check cells (tap to toggle) ----------
+    tbody.addEventListener('click', function (e) {
+        const cell = e.target.closest('.check-cell');
+        if (!cell) return;
+        if (cell.classList.contains('checked')) {
+            cell.classList.remove('checked');
+            cell.textContent = '';
+        } else {
+            cell.classList.add('checked');
+            cell.textContent = '✓';
+        }
+        autoAddRow();
+    });
+
+    // ---------- Input restrictions ----------
+    document.getElementById('itemStart').addEventListener('input', function () { cleanDecimalInput(this); });
+    document.getElementById('phoneInput').addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9\-]/g, '');
+    });
+
+    // Quantities may have up to 3 decimals: 10, 10.5, 10.25
+    function cleanDecimalInput(el) {
+        let v = el.value.replace(',', '.').replace(/[^0-9.]/g, '');
+        const i = v.indexOf('.');
+        if (i !== -1) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/\./g, '').slice(0, 3);
+        if (v !== el.value) el.value = v;
+    }
+
+    // A fraction can be typed in QTY (1/2, 3/4, 1 1/2). It stays as typed on the form and the printout; the stock uses its decimal value.
+    function fracNum(t) {
+        let m = /^(\d+)\s+(\d+)\s*\/\s*(\d+)$/.exec(t);
+        if (m) return +m[1] + (+m[2]) / (+m[3] || NaN);
+        m = /^(\d+)\s*\/\s*(\d+)$/.exec(t);
+        if (m) return (+m[1]) / (+m[2] || NaN);
+        return NaN;
+    }
+    function qtyNum(v) {
+        const t = String(v === undefined || v === null ? '' : v).trim().replace(',', '.');
+        if (t.indexOf('/') !== -1) { const f = fracNum(t); return isFinite(f) && f > 0 && f <= 99999999 ? Math.round(f * 1000) / 1000 : 0; }
+        if (!/^(?:\d+(?:\.\d{0,3})?|\.\d{1,3})$/.test(t)) return 0;
+        const n = parseFloat(t);
+        return isFinite(n) ? Math.round(n * 1000) / 1000 : 0;
+    }
+    function r3(x) { return Math.round(x * 1000) / 1000; }
+    // QTY boxes: digits, a decimal point, a space and / are allowed (a fraction stays exactly as typed)
+    function cleanQtyInput(el) {
+        let v = el.value.replace(/[^0-9.,\/ ]/g, '').replace(/ {2,}/g, ' ');
+        if (v.indexOf('/') === -1 && !/^\d+ \d*$/.test(v)) {   // no fraction ("1 " or "1 1" is the start of 1 1/2)
+            v = v.replace(/ /g, '').replace(',', '.');
+            const i = v.indexOf('.');
+            if (i !== -1) v = v.slice(0, i + 1) + v.slice(i + 1).replace(/\./g, '').slice(0, 3);
+        } else if (v.indexOf('/') !== -1) {
+            v = v.replace(/[.,]/g, '').slice(0, 10);
+        }
+        if (v !== el.value) el.value = v;
+    }
+    function bindQty(input) {
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); if (!addRowAfterEnter(input)) input.blur(); } });
+        input.addEventListener('input', function () { cleanQtyInput(this); autoAddRow(); });
+        input.addEventListener('blur', function () { if (this.value.indexOf('/') === -1 && this.value.indexOf(' ') !== -1) { this.value = this.value.replace(/ /g, ''); this.dispatchEvent(new Event('input', { bubbles: true })); } });
+    }
+    document.querySelectorAll('.qty-input').forEach(bindQty);
+
+    // ---------- Message banner ----------
+    const toast = document.getElementById('toast');
+    let toastTimer = null;
+
+    function showToast(message, isError) {
+        toast.textContent = message;
+        toast.classList.toggle('error', !!isError);
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove('show'); }, isError ? 8000 : 5000);
+    }
+
+    toast.addEventListener('click', function () { toast.classList.remove('show'); });
+
+    // =====================================================================
+    // SERVER CONNECTION
+    // =====================================================================
+    function updateStatus() {
+        const el = document.getElementById('storageStatus');
+        if (!el) return;
+        if (!connected) {
+            el.className = 'storage-status warn';
+            el.textContent = everLoaded
+                ? 'Cannot reach the stock room computer. Changes are NOT being saved. Check the Wi-Fi and that the server window is still open.'
+                : (location.protocol === 'file:'
+                    ? 'This page was opened as a file, so it cannot reach the stock room computer. Open the form from the address shown in the server window instead, for example http://10.0.0.7:3000/'
+                    : 'Connecting to the stock room computer at ' + location.host + '… If this stays here, the server window on that computer is closed or frozen (click it and press Enter), or its firewall is blocking port 3000.');
+            return;
+        }
+        let when = '';
+        if (serverSavedAt) when = ' · stock numbers as of ' + new Date(serverSavedAt).toLocaleString();
+        el.className = 'storage-status';
+        el.textContent = '✓ Pocket form: your entries are kept on this phone and sent when there is signal' + when +
+            (passwordSet ? '' : ' · Backup password not set yet, so automatic backups are off');
+    }
+
+    function setConnected(ok) {
+        if (connected !== ok) { connected = ok; updateStatus(); }
+    }
+
+    // fetch wrapper: throws an Error with .network (no reply) or .status/.data (server said no)
+    async function api(method, url, body) {
+        if (window.__pocketApi) { setConnected(true); return window.__pocketApi(method, url, body); }
+        let res;
+        try {
+            res = await fetch(url, {
+                method: method,
+                headers: body ? { 'Content-Type': 'application/json' } : undefined,
+                body: body ? JSON.stringify(body) : undefined,
+                cache: 'no-store'
+            });
+        } catch (e) {
+            setConnected(false);
+            const err = new Error('Cannot reach the stock room computer.');
+            err.network = true;
+            throw err;
+        }
+        if (res.status === 423) { location.reload(); return new Promise(function () {}); }   // locked: show the lock screen
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+        setConnected(true);
+        if (!res.ok) {
+            const err = new Error(data.error || 'The request failed.');
+            err.status = res.status;
+            err.data = data;
+            throw err;
+        }
+        return data;
+    }
+
+    function replaceStock(next) {
+        Object.keys(stock).forEach(function (k) { delete stock[k]; });
+        Object.keys(next).forEach(function (k) { stock[k] = next[k]; });
+    }
+
+    // Takes the state the server sent and shows it
+    function applyServerState(data) {
+        if (!data || !data.catalog || !data.stock) return;
+        const first = !everLoaded;
+        const changed = data.version !== serverVersion;
+        everLoaded = true;
+        serverVersion = data.version;
+        serverSavedAt = data.savedAt;
+        passwordSet = !!data.passwordSet;
+        if (changed || first) {
+            MATERIAL_CATALOG = data.catalog;
+            if (Array.isArray(data.names)) NAMES = data.names.slice();
+            if (Array.isArray(data.projects)) PROJECTS = data.projects.slice();
+            replaceStock(data.stock);
+            renderInventory();
+        }
+        updateStatus();
+    }
+
+    async function loadState() {
+        try { applyServerState(await api('GET', '/api/state')); }
+        catch (e) { /* the status line already says it cannot connect */ }
+    }
+
+    // =====================================================================
+    // DELIVERY / RETURN MODE
+    // =====================================================================
+    let PROJECTS = [];   // project names saved on the computer
+    let currentMode = 'delivery';   // 'delivery' removes from stock, 'return' adds to stock
+
+    const formTitle = document.getElementById('formTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitNote = document.getElementById('submitNote');
+
+    function applyMode(mode) {
+        currentMode = mode;
+        const isReturn = mode === 'return';
+        const name = isReturn ? 'Return Form' : 'Delivery Form';
+
+        formTitle.textContent = name;
+        document.title = name;
+        submitBtn.textContent = 'Submit ' + name;
+        submitNote.textContent = isReturn
+            ? 'Return Form: the QTY is ADDED to the stock room total. Tap Submit to save it.'
+            : 'Delivery Form: the QTY is REMOVED from the stock room total. Tap Submit to save it.';
+
+        document.getElementById('modeDelivery').classList.toggle('active', !isReturn);
+        document.getElementById('modeReturn').classList.toggle('active', isReturn);
+        refreshInventory();
+    }
+
+    document.querySelectorAll('.mode-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () { applyMode(btn.getAttribute('data-mode')); });
+    });
+
+    // =====================================================================
+    // STOCK ROOM INVENTORY (kept on the computer, shared by every device)
+    // =====================================================================
+    // The stock numbers are locked (gray) until an admin unlocks them with the password
+    let stockUnlocked = false;
+    let stockPw = null;
+    const countInputs = {};
+
+    function normalize(s) {
+        return s.toLowerCase().replace(/\s+/g, ' ').trim();
+    }
+
+    function findCatalogItem(text) {
+        const wanted = normalize(text);
+        let match = null;
+        Object.keys(MATERIAL_CATALOG).forEach(function (section) {
+            MATERIAL_CATALOG[section].forEach(function (item) {
+                if (normalize(item) === wanted) match = item;
+            });
+        });
+        return match;
+    }
+
+    // QTY entered on the form, added up per catalog item
+    function pendingTotals() {
+        const totals = {};
+        tbody.querySelectorAll('tr').forEach(function (tr) {
+            const qty = qtyNum(tr.querySelector('.qty-input').value);
+            const item = findCatalogItem(tr.querySelector('.mat-input').value);
+            if (qty && item) totals[item] = r3((totals[item] || 0) + qty);
+        });
+        return totals;
+    }
+
+    function modeSign() {
+        return currentMode === 'return' ? 1 : -1;
+    }
+
+    // Shows the stock total +/- the QTY currently typed on the form
+    function refreshInventory() {
+        const totals = pendingTotals();
+        const sign = modeSign();
+        Object.keys(countInputs).forEach(function (item) {
+            const pending = totals[item] || 0;
+            const shown = r3((stock[item] || 0) + sign * pending);
+            const input = countInputs[item];
+            if (document.activeElement !== input || input.readOnly) input.value = shown;   // do not overwrite a number that is being typed
+            input.readOnly = !stockUnlocked;
+            input.classList.toggle('changed', pending > 0);
+            input.classList.toggle('negative', shown < 0);
+        });
+    }
+
+    function applyStockLock() {
+        const inv = document.getElementById('inventory');
+        if (inv) inv.classList.toggle('locked', !stockUnlocked);
+        if (inv && typeof applyInvFilter === 'function') { Object.keys(invOpen).forEach(function (k) { delete invOpen[k]; }); applyInvFilter(); }
+        Object.keys(countInputs).forEach(function (k) { countInputs[k].readOnly = !stockUnlocked; });
+        const addB = document.getElementById('addItemBtn');
+        const rmB = document.getElementById('removeItemBtn');
+        if (addB) addB.classList.toggle('active', stockUnlocked);
+        if (rmB) rmB.classList.toggle('active', stockUnlocked);
+        const note = document.getElementById('lockNote');
+        if (note) note.textContent = stockUnlocked
+            ? 'Stock numbers are unlocked for typing. Click Add Category & item or Remove Category & item again to lock them.'
+            : 'Stock numbers are locked. Click Add Category & item or Remove Category & item (password needed) to unlock them.';
+    }
+
+    function lockStock() {
+        Object.keys(saveTimers).forEach(function (item) { sendStock(item); });   // send anything still waiting
+        stockUnlocked = false;
+        stockPw = null;
+        applyStockLock();
+    }
+
+    // Typed counts are sent to the computer a moment after typing stops
+    const saveTimers = {};
+    let pendingSaves = 0;
+
+    function sendStock(item) {
+        clearTimeout(saveTimers[item]);
+        delete saveTimers[item];
+        const value = stock[item] || 0;
+        api('POST', '/api/stock', { item: item, value: value, password: stockPw })
+            .catch(function () { /* the status line shows the problem */ })
+            .then(function () { pendingSaves = Math.max(0, pendingSaves - 1); });
+    }
+
+    function queueStockSave(item, now) {
+        if (!saveTimers[item]) pendingSaves++;
+        clearTimeout(saveTimers[item]);
+        if (now) { sendStock(item); return; }
+        saveTimers[item] = setTimeout(function () { sendStock(item); }, 500);
+    }
+
+    function renderInventory() {
+        const list = document.getElementById('inventoryList');
+        list.innerHTML = '';
+        Object.keys(countInputs).forEach(function (k) { delete countInputs[k]; });
+
+        Object.keys(MATERIAL_CATALOG)
+            .sort(function (a, b) { return a.localeCompare(b); })
+            .forEach(function (section) {
+                const heading = document.createElement('div');
+                heading.className = 'inv-heading inv-cat';
+                heading.setAttribute('data-cat', section);
+                heading.addEventListener('click', function () {
+                    if (findAll) { Object.keys(MATERIAL_CATALOG).forEach(function (k) { invOpen[k] = true; }); findAll = false; findSession = false; }   // clicking a heading ends the Find view but keeps everything open
+                    invOpen[section] = !invIsOpen(section);
+                    applyInvFilter();
+                });
+                list.appendChild(heading);
+
+                if (!MATERIAL_CATALOG[section].length) {
+                    const none = document.createElement('div');
+                    none.className = 'inv-empty';
+                    none.setAttribute('data-cat', section);
+                    none.textContent = 'No items yet';
+                    list.appendChild(none);
+                }
+
+                MATERIAL_CATALOG[section]
+                    .slice()
+                    .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); })
+                    .forEach(function (item) {
+                        const row = document.createElement('div');
+                        row.className = 'inv-row';
+                        row.setAttribute('data-cat', section);
+                        row.setAttribute('data-item', item);
+
+                        const name = document.createElement('div');
+                        name.className = 'inv-name';
+                        name.setAttribute('data-name', item);
+                        name.textContent = item;
+
+                        const count = document.createElement('input');
+                        count.type = 'text';
+                        count.className = 'inv-count';
+                        count.inputMode = 'decimal';
+                        count.setAttribute('pattern', '[0-9]*[.,]?[0-9]*');
+                        count.setAttribute('aria-label', item + ' in stock');
+                        count.value = stock[item] || 0;
+                        count.readOnly = !stockUnlocked;
+
+                        // Typing a new total sets the real stock (the form's QTY stays applied on top).
+                        function commitTyped(box, now) {
+                            const typed = qtyNum(box.value);
+                            const pending = pendingTotals()[item] || 0;
+                            stock[item] = Math.max(0, r3(typed - modeSign() * pending));
+                            queueStockSave(item, now);
+                        }
+                        count.addEventListener('input', function () {
+                            cleanDecimalInput(this);
+                            commitTyped(this, false);
+                        });
+                        count.addEventListener('change', function () {
+                            commitTyped(this, true);
+                            refreshInventory();
+                        });
+                        count.addEventListener('focus', function () { this.select(); });
+
+                        countInputs[item] = count;
+                        row.appendChild(name);
+                        row.appendChild(count);
+                        list.appendChild(row);
+                    });
+            });
+
+        refreshInventory();
+        applyStockLock();
+        applyInvFilter();
+    }
+
+    // Stock Room list: categories start collapsed. Typing in the search box opens every category
+    // that has a matching item, hides items that do not start with the typed letters, and
+    // highlights the typed letters. Tap a category name to open or close it by hand.
+    // Search rule shared by the Materials box and the Stock Room list (same idea as Project Name):
+    // every typed word must appear somewhere in the item name, in any order. "grind a" finds "Milwaukee Grinder A".
+    function searchWords(q) { return String(q || '').toLowerCase().split(/\s+/).filter(Boolean); }
+    function itemMatches(item, q) {
+        const words = searchWords(q);
+        if (!words.length) return true;
+        const low = item.toLowerCase();
+        return words.every(function (w) { return low.indexOf(w) !== -1; });
+    }
+    // Puts text into el with every typed word highlighted
+    function fillHighlighted(el, text, q, cls) {
+        el.textContent = '';
+        const words = searchWords(q);
+        const low = text.toLowerCase();
+        const on = new Array(text.length + 1).fill(false);
+        words.forEach(function (w) {
+            let at = low.indexOf(w);
+            while (at !== -1) { for (let i = at; i < at + w.length; i++) on[i] = true; at = low.indexOf(w, at + 1); }
+        });
+        let i = 0;
+        while (i < text.length) {
+            let j = i;
+            while (j < text.length && on[j] === on[i]) j++;
+            if (on[i]) { const m = document.createElement('mark'); m.className = cls; m.textContent = text.slice(i, j); el.appendChild(m); }
+            else el.appendChild(document.createTextNode(text.slice(i, j)));
+            i = j;
+        }
+    }
+
+    const invOpen = {};
+    let invMatInput = null;   // the Materials box being typed in drives this list too
+    function invQuery() {
+        const m = invMatInput ? invMatInput.value.trim() : '';
+        return m || document.getElementById('invSearch').value.trim();
+    }
+    let invQueryShown = '';
+    // Ctrl+F (browser Find): every category opens so Find can see all the items; it closes again when Find is closed
+    let findAll = false, findSession = false, findBlurred = false, findT = 0;
+    function findStart() {
+        findT = Date.now();
+        if (findAll) return;
+        findAll = true; findSession = true; findBlurred = false;
+        applyInvFilter();
+    }
+    function findEnd() {
+        findAll = false; findSession = false;
+        applyInvFilter();
+    }
+    document.addEventListener('keydown', function (e) {
+        const isFind = ((e.ctrlKey || e.metaKey) && !e.altKey && String(e.key).toLowerCase() === 'f') || e.key === 'F3';
+        if (!isFind) return;
+        const box = document.getElementById('invSearch');
+        if (e.key !== 'F3' && document.activeElement !== box && !anyDialogOpen()) {
+            // first Ctrl+F: use the page's own search box (it shows only the items that match what is typed);
+            // Ctrl+F again while that box is selected opens the browser's Find with every menu open
+            e.preventDefault();
+            box.focus(); box.select();
+            try { box.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (x) { /* ignore */ }
+            return;
+        }
+        findStart();
+    });
+    window.addEventListener('blur', function () { if (findSession) findBlurred = true; });
+    window.addEventListener('focus', function () { if (findSession && findBlurred && Date.now() - findT > 600) findEnd(); });
+
+    function invIsOpen(section) {
+        if (findAll) return true;
+        const q = invQuery();
+        if (q) return invOpen[section] !== false;
+        return invOpen[section] !== undefined ? invOpen[section] : stockUnlocked;   // admin unlocked = all open
+    }
+    function applyInvFilter() {
+        const q = invQuery().toLowerCase();
+        if (q !== invQueryShown) { Object.keys(invOpen).forEach(function (k) { delete invOpen[k]; }); invQueryShown = q; }
+        const list = document.getElementById('inventoryList');
+        const matches = {};
+        list.querySelectorAll('.inv-row').forEach(function (row) {
+            const item = row.getAttribute('data-item');
+            const hit = !q || itemMatches(item, q);
+            const cat = row.getAttribute('data-cat');
+            if (hit) matches[cat] = (matches[cat] || 0) + 1;
+            const nm = row.querySelector('.inv-name');
+            if (q && hit) fillHighlighted(nm, item, q, 'inv-hl');
+            else nm.textContent = item;
+            row._hit = hit;
+        });
+        list.querySelectorAll('.inv-heading').forEach(function (h) {
+            const cat = h.getAttribute('data-cat');
+            const n = matches[cat] || 0;
+            const open = invIsOpen(cat);
+            h.style.display = (q && !n) ? 'none' : '';
+            h.textContent = (open ? '\u25BE ' : '\u25B8 ') + cat + (n || !q ? ' (' + (q ? n : list.querySelectorAll('.inv-row[data-cat="' + cat.replace(/"/g, '\\"') + '"]').length) + ')' : '');
+        });
+        list.querySelectorAll('.inv-row').forEach(function (row) {
+            row.style.display = (row._hit && invIsOpen(row.getAttribute('data-cat'))) ? '' : 'none';
+        });
+        list.querySelectorAll('.inv-empty').forEach(function (e) {
+            e.style.display = (!q && invIsOpen(e.getAttribute('data-cat'))) ? '' : 'none';
+        });
+    }
+    document.getElementById('invSearch').addEventListener('input', applyInvFilter);
+
+    // The stock room total follows the QTY boxes as they are typed
+    document.getElementById('formContainer').addEventListener('input', refreshInventory);
+
+    function clearRows() {
+        setTimeout(function () { applyInvFilter(); }, 0);
+        while (tbody.children.length > START_ROWS) tbody.lastElementChild.remove();   // the extra rows go away after a submit
+        tbody.querySelectorAll('tr').forEach(function (tr) {
+            tr.querySelectorAll('input, textarea').forEach(function (i) { i.value = ''; });
+            tr.querySelectorAll('textarea.mat-input').forEach(fitMat);
+            tr.querySelectorAll('.check-cell').forEach(function (c) {
+                c.classList.remove('checked');
+                c.textContent = '';
+            });
+        });
+    }
+
+    // ---------- Keep every device in step with the computer ----------
+    let submitting = false;
+
+    function anyDialogOpen() {
+        return document.getElementById('pwModal').classList.contains('open') ||
+            document.getElementById('itemModal').classList.contains('open') ||
+            document.getElementById('nameSheet').classList.contains('open') ||
+            document.getElementById('nameModal').classList.contains('open') ||
+            document.getElementById('thrModal').classList.contains('open') ||
+            document.getElementById('projModal').classList.contains('open');
+    }
+
+    function typingInCount() {
+        const a = document.activeElement;
+        return !!(a && a.classList && a.classList.contains('inv-count'));
+    }
+
+    setInterval(function () {
+        if (document.hidden || submitting || pendingSaves > 0 || anyDialogOpen() || typingInCount()) return;
+        loadState();
+    }, 4000);
+
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && !submitting && pendingSaves === 0 && !anyDialogOpen() && !typingInCount()) loadState();
+    });
+
+    // =====================================================================
+    // SUBMIT: the computer updates the stock, writes the log and the backup
+    // =====================================================================
+    submitBtn.addEventListener('click', async function () {
+        if (submitting) return;
+
+        // Required before anything is sent:
+        // 1) Project Name,
+        // 2) a green check in the Loaded column (Delivery) or the Accepted column (Return) on EVERY
+        //    row that has an item, and no green check on a row that is empty,
+        // 3) a selected name under ITEMS WERE COLLECTED BY.
+        const projectName = document.getElementById('projectNameInput').value.trim();
+        const isReturnForm = currentMode === 'return';
+        const checkCol = isReturnForm ? 4 : 2;
+        const checkLabel = isReturnForm ? 'Accepted' : 'Loaded';
+        const rowsNow = Array.from(tbody.querySelectorAll('tr'));
+        const loadedChecked = rowsNow.some(function (tr) {
+            return tr.cells[checkCol] && tr.cells[checkCol].classList.contains('checked');
+        });
+        let rowProblem = '';
+        rowsNow.forEach(function (tr, idx) {
+            if (rowProblem) return;
+            const filled = !!(qtyNum(tr.querySelector('.qty-input').value) || tr.querySelector('.mat-input').value.trim());
+            const checked = !!(tr.cells[checkCol] && tr.cells[checkCol].classList.contains('checked'));
+            if (filled && !checked) rowProblem = 'Row ' + (idx + 1) + ' has an item but no green check mark in the ' + checkLabel + ' column. The check mark must be on the same row as the item.';
+            else if (!filled && checked) rowProblem = 'Row ' + (idx + 1) + ' has a green check mark in the ' + checkLabel + ' column but no QTY and item. Remove the check mark or fill in that row.';
+        });
+        const collectedBlock = document.querySelector('.sig-collected .sig-line');
+        const collectedName = collectedBlock ? collectedBlock.textContent.trim() : '';
+
+        if (!projectName) {
+            showToast('Please enter the Project Name before submitting.', true);
+            document.getElementById('projectNameInput').focus();
+            return;
+        }
+        if (PROJECTS.length && !PROJECTS.some(function (p) { return p.toLowerCase() === projectName.toLowerCase(); })) {
+            showToast('Please pick the Project Name from the list. An admin can add new ones with + Add Project Name.', true);
+            document.getElementById('projectNameInput').focus();
+            return;
+        }
+        if (!loadedChecked) {
+            showToast('Please mark at least one item as ' + checkLabel + ' (green check mark).', true);
+            return;
+        }
+        if (rowProblem) {
+            showToast(rowProblem, true);
+            return;
+        }
+        if (!collectedName) {
+            showToast('Please select a name under ITEMS WERE COLLECTED BY before submitting.', true);
+            return;
+        }
+
+        const totals = {};
+        const unknown = [];
+        let incomplete = 0;
+
+        tbody.querySelectorAll('tr').forEach(function (tr) {
+            const qty = qtyNum(tr.querySelector('.qty-input').value);
+            const text = tr.querySelector('.mat-input').value.trim();
+            if (!qty && !text) return;
+            if (!qty || !text) { incomplete++; return; }
+
+            const item = findCatalogItem(text);
+            if (!item) { unknown.push(text); return; }
+            totals[item] = r3((totals[item] || 0) + qty);
+        });
+
+        const names = Object.keys(totals);
+        const extra = [];
+        if (unknown.length) extra.push('Not in the stock list (skipped): ' + unknown.join(', '));
+        if (incomplete) extra.push(incomplete + ' row(s) missing a QTY or an item (skipped)');
+
+        if (!names.length) {
+            showToast('Nothing to submit. Enter a QTY and pick an item from the list.' +
+                (extra.length ? '\n' + extra.join('\n') : ''), true);
+            return;
+        }
+
+        const isReturn = currentMode === 'return';
+
+        submitting = true;
+        submitBtn.disabled = true;
+        try {
+            // a copy of the whole form as it is now, for the printout (the form is cleared after the submit)
+            const formSnap = {
+                title: formTitle.textContent,
+                info: Array.from(document.querySelectorAll('.info-column')).map(function (col) {
+                    return Array.from(col.querySelectorAll('.info-row')).map(function (row) {
+                        const inp = row.querySelector('.info-input');
+                        return { label: row.querySelector('.info-label').textContent.trim(), value: inp ? inp.value.trim() : '' };
+                    });
+                }),
+                heads: Array.from(document.querySelectorAll('table thead th')).map(function (th) { return th.textContent.trim(); }),
+                rows: Array.from(tbody.querySelectorAll('tr')).map(function (tr) {
+                    return {
+                        qty: (function (v) { const n = qtyNum(v); return n ? (v.indexOf('/') !== -1 ? v.trim().replace(/\s+/g, ' ') : String(n)) : ''; })(tr.querySelector('.qty-input').value),
+                        mat: tr.querySelector('.mat-input').value.trim(),
+                        checks: Array.from(tr.querySelectorAll('.check-cell')).map(function (c) { return c.classList.contains('checked'); })
+                    };
+                }),
+                sigs: Array.from(document.querySelectorAll('.footer-signatures .sig-block')).map(function (b) {
+                    return { label: b.querySelector('.sig-label').textContent.trim(), name: b.querySelector('.sig-line').textContent.trim() };
+                })
+            };
+            const data = await api('POST', '/api/submit', {
+                form: formSnap,
+                formType: isReturn ? 'Return' : 'Delivery',
+                projectName: projectName,
+                collectedBy: collectedName,
+                items: names.map(function (n) { return { name: n, quantity: totals[n] }; })
+            });
+            clearRows();          // rows are cleared so the same items cannot be counted twice
+            // the rest of the form is cleared too: header fields and every signature name
+            document.querySelectorAll('.info-input').forEach(function (i) { i.value = ''; });
+            document.querySelectorAll('.sig-line').forEach(function (l) { l.textContent = ''; });
+            invMatInput = null;
+            applyInvFilter();
+            serverVersion = 0;    // force a redraw with the new totals
+            applyServerState(data);
+            refreshInventory();
+            toast.classList.remove('show');
+            if (data.logged === false) {
+                showToast('Submitted, but the log file could not be written on the computer. Tell the person in charge.', true);
+            }
+            if (data.pdf === null) showToast('Submitted, but the PDF copy could not be saved on the computer. Tell the person in charge.', true);
+            handlePrintResult(data);
+        } catch (e) {
+            showToast(e.network
+                ? 'Cannot reach the stock room computer. Nothing was submitted.'
+                : e.message, true);
+            if (!e.network) loadState();   // show the latest counts from the computer
+        } finally {
+            submitting = false;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // =====================================================================
+    // PASSWORD DIALOG (the password itself is kept and checked on the computer)
+    // =====================================================================
+    const pwModal = document.getElementById('pwModal');
+    const pwTitle = document.getElementById('pwTitle');
+    const pwMsg = document.getElementById('pwMsg');
+    const pwInput = document.getElementById('pwInput');
+    const pwInput2 = document.getElementById('pwInput2');
+    const pwError = document.getElementById('pwError');
+    const pwOk = document.getElementById('pwOk');
+    const pwCancel = document.getElementById('pwCancel');
+
+    // Resolves true when opts.submit(password) succeeded, false when cancelled.
+    // opts.submit returns null on success or an error message to show.
+    function askPassword(opts) {
+        return new Promise(function (resolve) {
+            pwTitle.textContent = opts.title;
+            pwMsg.textContent = opts.message || '';
+            pwMsg.style.display = opts.message ? '' : 'none';
+            pwInput.value = '';
+            pwInput2.value = '';
+            pwInput.setAttribute('autocomplete', opts.confirm ? 'new-password' : 'current-password');
+            pwInput.style.display = '';
+            pwOk.textContent = 'OK';
+            pwOk.disabled = false;
+            pwInput2.style.display = (opts.confirm || opts.second) ? 'block' : 'none';
+            if (opts.second) { pwInput2.type = 'text'; pwInput2.placeholder = opts.second; }
+            pwError.textContent = '';
+            pwModal.classList.add('open');
+            setTimeout(function () { pwInput.focus(); }, 50);
+
+            let busy = false;
+
+            function close(result) {
+                pwModal.classList.remove('open');
+                pwOk.onclick = null;
+                pwCancel.onclick = null;
+                pwModal.onkeydown = null;
+                pwInput.value = '';
+                pwInput2.value = '';
+                pwInput2.type = 'password';
+                pwInput2.placeholder = 'Confirm password';
+                resolve(result);
+            }
+
+            async function submit() {
+                if (busy) return;
+                const pw = pwInput.value;
+                if (opts.confirm) {
+                    if (pw.length < 4) { pwError.textContent = 'Use at least 4 characters.'; return; }
+                    if (pw !== pwInput2.value) { pwError.textContent = 'The two passwords do not match.'; return; }
+                } else if (!pw) {
+                    pwError.textContent = opts.emptyText || 'Enter the password.';
+                    return;
+                }
+                busy = true;
+                pwOk.disabled = true;
+                pwError.textContent = opts.workingText || 'Working…';
+                let err = null;
+                try { err = await opts.submit(pw, pwInput2.value); } catch (e) { err = 'Something went wrong. Please try again.'; }
+                busy = false;
+                pwOk.disabled = false;
+                if (err) { pwError.textContent = err; pwInput.select(); return; }
+                close(true);
+            }
+
+            pwOk.onclick = submit;
+            pwCancel.onclick = function () { if (!busy) close(false); };
+            pwModal.onkeydown = function (e) {
+                if (e.key === 'Enter') { e.preventDefault(); submit(); }
+                else if (e.key === 'Escape' && !busy) { close(false); }
+            };
+        });
+    }
+
+    // A one-button step with a Cancel button
+    function showStep(opts) {
+        pwTitle.textContent = opts.title;
+        pwMsg.textContent = opts.message;
+        pwMsg.style.display = '';
+        pwInput.style.display = 'none';
+        pwInput2.style.display = 'none';
+        pwError.textContent = '';
+        pwOk.textContent = opts.okLabel;
+        pwOk.disabled = false;
+        pwModal.classList.add('open');
+
+        function end() {
+            pwModal.classList.remove('open');
+            pwInput.style.display = '';
+            pwOk.textContent = 'OK';
+            pwOk.onclick = null;
+            pwCancel.onclick = null;
+            pwModal.onkeydown = null;
+        }
+        pwOk.onclick = function () { end(); opts.onOk(); };
+        pwCancel.onclick = function () { end(); if (opts.onCancel) opts.onCancel(); };
+        pwModal.onkeydown = function (e) {
+            if (e.key === 'Escape') { end(); if (opts.onCancel) opts.onCancel(); }
+        };
+    }
+
+    // Asks for the backup password (or sets one the first time).
+    // Resolves with the verified password, or null if cancelled.
+    async function requirePassword(reason) {
+        let verified = null;
+
+        if (!passwordSet) {
+            const ok = await askPassword({
+                title: 'Set a backup password',
+                message: 'Add Category & item, Remove Category & item, Save backup and Restore backup are protected by one password. Choose it now. ' +
+                    'You will need it every time. It is stored on the stock room computer in a scrambled form that cannot be read back, ' +
+                    'so write it down. If it is forgotten, an admin on the stock room computer can set a new one.',
+                confirm: true,
+                workingText: 'Saving…',
+                submit: async function (pw) {
+                    try { await api('POST', '/api/password/set', { password: pw }); }
+                    catch (e) {
+                        if (e.status === 403) { passwordSet = true; return 'A password was just set. Close this and try again.'; }
+                        return e.message;
+                    }
+                    passwordSet = true;
+                    verified = pw;
+                    updateStatus();
+                    return null;
+                }
+            });
+            return ok ? verified : null;
+        }
+
+        const ok = await askPassword({
+            title: 'Enter the password',
+            message: reason,
+            confirm: false,
+            workingText: 'Checking…',
+            submit: async function (pw) {
+                try { await api('POST', '/api/password/check', { password: pw }); }
+                catch (e) {
+                    if (e.data && e.data.error === 'password-not-set') {
+                        passwordSet = false;
+                        updateStatus();
+                        return 'No password is set any more. Close this and try again.';
+                    }
+                    return e.message;
+                }
+                verified = pw;
+                return null;
+            }
+        });
+        return ok ? verified : null;
+    }
+
+    // =====================================================================
+    // ADD / REMOVE ITEMS  (the category is chosen first)
+    // =====================================================================
+    const itemModal = document.getElementById('itemModal');
+    const itemTitle = document.getElementById('itemTitle');
+    const itemCategory = document.getElementById('itemCategory');
+    const itemAddFields = document.getElementById('itemAddFields');
+    const itemRemoveFields = document.getElementById('itemRemoveFields');
+    const itemName = document.getElementById('itemName');
+    const itemNewCat = document.getElementById('itemNewCat');
+    const itemNameLabel = document.getElementById('itemNameLabel');
+    const itemStart = document.getElementById('itemStart');
+    const itemList = document.getElementById('itemList');
+    const itemMsg = document.getElementById('itemMsg');
+    const itemOk = document.getElementById('itemOk');
+
+    let itemMode = 'add';
+    let itemPw = null;          // the verified password, held only while the dialog is open
+    let chosenRemove = null;
+    let removeArmed = false;
+    let removeWhole = false;
+    let itemBusy = false;
+
+    function closeItemDialog() {
+        itemModal.classList.remove('open');
+        document.body.classList.remove('item-open');
+        itemPw = null;
+    }
+
+    function resetRemoveState() {
+        chosenRemove = null;
+        removeWhole = false;
+        removeArmed = false;
+        itemMsg.textContent = '';
+        itemOk.textContent = 'Remove';
+    }
+
+    function fillRemoveList(cat) {
+        itemList.innerHTML = '';
+        resetRemoveState();
+
+        function hint(text) {
+            const d = document.createElement('div');
+            d.className = 'item-empty';
+            d.textContent = text;
+            itemList.appendChild(d);
+        }
+
+        if (!cat) { hint('Choose a category first.'); return; }
+        const items = (MATERIAL_CATALOG[cat] || []).slice()
+            .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+
+        const whole = document.createElement('label');
+        whole.className = 'item-option';
+        const wr = document.createElement('input');
+        wr.type = 'radio';
+        wr.name = 'rmpick';
+        wr.addEventListener('change', function () {
+            resetRemoveState();
+            removeWhole = true;
+        });
+        const wt = document.createElement('span');
+        wt.textContent = 'The whole category "' + cat + '" (' + items.length + ' item' + (items.length === 1 ? '' : 's') + ')';
+        wt.style.fontWeight = 'bold';
+        whole.appendChild(wr);
+        whole.appendChild(wt);
+        itemList.appendChild(whole);
+
+        items.forEach(function (item) {
+            const label = document.createElement('label');
+            label.className = 'item-option';
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'rmpick';
+            radio.addEventListener('change', function () {
+                resetRemoveState();
+                chosenRemove = item;
+            });
+
+            const text = document.createElement('span');
+            text.textContent = item + ' · ' + (stock[item] || 0) + ' in stock';
+
+            label.appendChild(radio);
+            label.appendChild(text);
+            itemList.appendChild(label);
+        });
+    }
+
+    // Fills the category drop-down (Add has an extra "+ New category…" choice)
+    function rebuildCategories(isAdd, selected) {
+    itemCategory.innerHTML = '';
+    const ph = document.createElement('option');
+    ph.value = '';
+    ph.textContent = 'Choose a category…';
+    ph.disabled = true;
+    ph.selected = true;
+    itemCategory.appendChild(ph);
+    if (isAdd) {
+        const nw = document.createElement('option');
+        nw.value = '__new__';
+        nw.textContent = '+ New category…';
+        itemCategory.appendChild(nw);
+    }
+    Object.keys(MATERIAL_CATALOG)
+        .sort(function (a, b) { return a.localeCompare(b); })
+        .forEach(function (c) {
+            const o = document.createElement('option');
+            o.value = c;
+            o.textContent = c;
+            itemCategory.appendChild(o);
+        });
+    itemCategory.value = selected || '';
+    }
+
+    function openItemDialog(mode) {
+        itemMode = mode;
+        const isAdd = mode === 'add';
+        itemTitle.textContent = isAdd ? 'Add a category & item' : 'Remove a category & item';
+        itemOk.textContent = isAdd ? 'Add' : 'Remove';
+        itemOk.className = isAdd ? 'pw-ok' : 'pw-ok danger';
+        itemMsg.textContent = '';
+
+        rebuildCategories(isAdd, '');
+
+        itemAddFields.style.display = isAdd ? 'block' : 'none';
+        itemRemoveFields.style.display = isAdd ? 'none' : 'block';
+        itemName.value = '';
+        itemNewCat.value = '';
+        itemNewCat.style.display = 'none';
+        itemNameLabel.textContent = '2. Item name';
+        itemStart.value = '';
+        itemName.disabled = true;      // unlocked once a category is chosen
+        itemStart.disabled = true;
+        chosenRemove = null;
+        removeWhole = false;
+        removeArmed = false;
+        if (!isAdd) fillRemoveList('');
+
+        itemModal.classList.add('open');
+        document.body.classList.add('item-open');
+        setTimeout(function () { itemCategory.focus(); }, 50);
+    }
+
+    itemCategory.addEventListener('change', function () {
+        itemMsg.textContent = '';
+        if (itemMode === 'add') {
+            const isNew = itemCategory.value === '__new__';
+            itemNewCat.style.display = isNew ? 'block' : 'none';
+            itemNameLabel.textContent = isNew ? '2. First item in it (optional)' : '2. Item name';
+            itemName.disabled = false;
+            itemStart.disabled = false;
+            (isNew ? itemNewCat : itemName).focus();
+        } else {
+            fillRemoveList(itemCategory.value);
+        }
+    });
+
+    itemStart.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    itemOk.addEventListener('click', async function () {
+        if (itemBusy) return;
+        const cat = itemCategory.value;
+        itemMsg.textContent = '';
+        itemMsg.style.color = '';
+
+        const isNewCat = itemMode === 'add' && cat === '__new__';
+        if (!isNewCat && (!cat || !Object.prototype.hasOwnProperty.call(MATERIAL_CATALOG, cat))) {
+            itemMsg.textContent = 'Choose a category first.';
+            itemCategory.focus();
+            return;
+        }
+
+        if (itemMode === 'add') {
+            const newCatName = itemNewCat.value.replace(/\s+/g, ' ').trim();
+            if (isNewCat && !newCatName) { itemMsg.textContent = 'Type the new category name.'; itemNewCat.focus(); return; }
+            const name = itemName.value.replace(/\s+/g, ' ').trim();
+            if (!isNewCat && !name) { itemMsg.textContent = 'Type the item name.'; itemName.focus(); return; }
+
+            const raw = itemStart.value.trim();
+            const goodStart = !raw || /^(?:\d+(?:[.,]\d{0,3})?|[.,]\d{1,3})$/.test(raw);
+            const start = raw ? qtyNum(raw) : 0;
+            if (!goodStart || start < 0 || start > 999999) {
+                itemMsg.textContent = 'The starting count must be a number (up to 3 decimals, like 10.25).';
+                return;
+            }
+
+            itemBusy = true;
+            itemOk.disabled = true;
+            try {
+                const data = await api('POST', '/api/items/add',
+                    { password: itemPw, category: isNewCat ? '' : cat, newCategory: isNewCat ? newCatName : '', name: name, start: start });
+                serverVersion = 0;
+                applyServerState(data);
+                const where = data.category || cat;
+                const done = data.newCategory ? 'Added category "' + where + '"' + (data.name ? ' and item "' + data.name + '"' : '') + '.'
+                    : 'Added "' + data.name + '" to ' + where + (start ? ' with ' + start + ' in stock.' : '.');
+                // the window stays open for the next one; it closes only with the Done button
+                rebuildCategories(true, where);
+                itemNewCat.value = '';
+                itemNewCat.style.display = 'none';
+                itemNameLabel.textContent = '2. Item name';
+                itemName.value = '';
+                itemStart.value = '';
+                itemName.disabled = false;
+                itemStart.disabled = false;
+                itemMsg.textContent = '✓ ' + done;
+                itemMsg.style.color = '#1e7b34';
+                itemName.focus();
+            } catch (e) {
+                itemMsg.textContent = e.message;
+            } finally {
+                itemBusy = false;
+                itemOk.disabled = false;
+            }
+            return;
+        }
+
+        // remove: pick an item, then confirm
+        if (!chosenRemove && !removeWhole) { itemMsg.textContent = 'Choose the item or the whole category to remove.'; return; }
+        const have = chosenRemove ? (stock[chosenRemove] || 0) : 0;
+        if (!removeArmed) {
+            removeArmed = true;
+            itemMsg.textContent = removeWhole
+                ? 'Remove the category "' + cat + '" and every item in it (their counts will be deleted)? Tap "Yes, remove" to confirm.'
+                : 'Remove "' + chosenRemove + '"' +
+                (have ? ' (' + have + ' in stock, that count will be deleted)' : '') +
+                '? Tap "Yes, remove" to confirm.';
+            itemOk.textContent = 'Yes, remove';
+            return;
+        }
+
+        itemBusy = true;
+        itemOk.disabled = true;
+        try {
+            const data = await api('POST', '/api/items/remove',
+                removeWhole ? { password: itemPw, category: cat, removeCategory: true }
+                            : { password: itemPw, category: cat, name: chosenRemove });
+            serverVersion = 0;
+            applyServerState(data);
+            const removedText = removeWhole ? 'Removed the category "' + cat + '".' : 'Removed "' + chosenRemove + '".';
+            // the window stays open; it closes only with the Done button
+            rebuildCategories(false, removeWhole ? '' : cat);
+            fillRemoveList(removeWhole ? '' : cat);
+            itemMsg.textContent = '✓ ' + removedText;
+            itemMsg.style.color = '#1e7b34';
+        } catch (e) {
+            itemMsg.textContent = e.message;
+        } finally {
+            itemBusy = false;
+            itemOk.disabled = false;
+        }
+    });
+
+    // Done: close the window and lock (gray out) the stock numbers again.
+    // They unlock again only after an admin clicks Add / Remove Category & item and enters the password.
+    document.getElementById('itemDone').addEventListener('click', function () {
+        closeItemDialog();
+        lockStock();
+        showToast('Done. The stock numbers are locked again.', false);
+    });
+    itemModal.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { e.preventDefault(); return; }       // only the Done button closes this window
+        if (e.key === 'Enter' && (e.target === itemName || e.target === itemStart || e.target === itemNewCat)) {
+            e.preventDefault();
+            itemOk.click();
+        }
+    });
+
+    // Add / Remove need the backup password (the first time, the form asks you to set it).
+    let itemGateBusy = false;
+
+    async function openItemDialogWithPassword(mode) {
+        if (itemGateBusy) return;
+        itemGateBusy = true;
+        try {
+            const pw = await requirePassword(mode === 'add'
+                ? 'Enter the backup password to add a category or item.'
+                : 'Enter the backup password to remove a category or item.');
+            if (pw) {
+                itemPw = pw;
+                stockUnlocked = true;          // the stock numbers can be typed until a button is clicked again
+                stockPw = pw;
+                applyStockLock();
+                openItemDialog(mode);
+            }
+        } finally {
+            itemGateBusy = false;
+        }
+    }
+
+    // First click: password, then the dialog opens and the stock numbers unlock.
+    // Click either button again: the stock numbers lock (gray) again.
+    function manageClicked(mode) {
+        if (stockUnlocked) {
+            lockStock();
+            showToast('Stock numbers are locked again.', false);
+            return;
+        }
+        openItemDialogWithPassword(mode);
+    }
+    // + Add / - Remove Project Name: password first, then a small window just for the Project Name list
+    const projModal = document.getElementById('projModal');
+    const projMsg = document.getElementById('projMsg');
+    const projNew = document.getElementById('projNew');
+    let projPw = null;
+    let projMode = 'add';
+    let projBusy = false;
+
+    function drawProjList() {
+        const isAdd = projMode === 'add';
+        document.getElementById('projTitle').textContent = isAdd ? 'Add a Project Name' : 'Remove a Project Name';
+        document.getElementById('projAdd').style.display = isAdd ? '' : 'none';
+        document.getElementById('projNewLabel').style.display = isAdd ? '' : 'none';
+        projNew.style.display = isAdd ? '' : 'none';
+        const box = document.getElementById('projList');
+        box.innerHTML = '';
+        PROJECTS.forEach(function (n) {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:8px;padding:7px 2px;border-bottom:1px solid #eee;font-size:14px';
+            const span = document.createElement('span'); span.textContent = n;
+            row.appendChild(span);
+            if (!isAdd) {
+                const rm = document.createElement('button');
+                rm.type = 'button'; rm.textContent = 'Remove'; rm.className = 'pw-cancel'; rm.style.cssText = 'padding:4px 10px;min-height:0;flex-shrink:0';
+                rm.addEventListener('click', function () {
+                    if (rm.getAttribute('data-sure') !== '1') { rm.setAttribute('data-sure', '1'); rm.textContent = 'Yes, remove'; return; }
+                    changeProject('/api/projects/remove', n);
+                });
+                row.appendChild(rm);
+            }
+            box.appendChild(row);
+        });
+    }
+
+    async function changeProject(path, name) {
+        if (projBusy) return;
+        projBusy = true;
+        projMsg.textContent = ''; projMsg.style.color = '';
+        try {
+            const data = await api('POST', path, { name: name, password: projPw });
+            serverVersion = 0;
+            applyServerState(data);
+            if (Array.isArray(data.projects)) PROJECTS = data.projects.slice();
+            projNew.value = '';
+            projMsg.textContent = path.indexOf('add') !== -1 ? '\u2713 Added.' : '\u2713 Removed.';
+            projMsg.style.color = '#1e7b34';
+        } catch (e) { projMsg.textContent = e.message; }
+        projBusy = false;
+        drawProjList();
+    }
+
+    document.getElementById('projAdd').addEventListener('click', function () { changeProject('/api/projects/add', projNew.value); projNew.focus(); });
+    projNew.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); changeProject('/api/projects/add', projNew.value); } });
+    document.getElementById('projDone').addEventListener('click', function () { projModal.classList.remove('open'); projPw = null; });
+    projModal.addEventListener('keydown', function (e) { if (e.key === 'Escape') e.preventDefault(); });
+
+    async function openProjectDialogWithPassword(mode) {
+        if (itemGateBusy) return;
+        itemGateBusy = true;
+        try {
+            const pw = await requirePassword('Enter the backup password to ' + (mode === 'add' ? 'add' : 'remove') + ' a Project Name.');
+            if (pw) {
+                projPw = pw; projMode = mode; projMsg.textContent = ''; projNew.value = '';
+                drawProjList();
+                projModal.classList.add('open');
+                if (mode === 'add') setTimeout(function () { projNew.focus(); }, 50);
+            }
+        } finally {
+            itemGateBusy = false;
+        }
+    }
+    document.getElementById('addProjBtn').addEventListener('click', function () { openProjectDialogWithPassword('add'); });
+    document.getElementById('removeProjBtn').addEventListener('click', function () { openProjectDialogWithPassword('remove'); });
+    document.getElementById('addItemBtn').addEventListener('click', function () { manageClicked('add'); });
+    document.getElementById('removeItemBtn').addEventListener('click', function () { manageClicked('remove'); });
+    applyStockLock();
+
+    // =====================================================================
+    // LOCKED BACKUPS (written to, and restored from, the computer's data folder)
+    // =====================================================================
+    let backupBusy = false;
+
+    document.getElementById('backupBtn').addEventListener('click', async function () {
+        if (backupBusy) return;
+        backupBusy = true;
+        try {
+            const pw = await requirePassword('Enter the backup password to save a locked backup on the computer.');
+            if (!pw) return;
+            try {
+                const data = await api('POST', '/api/backup', { password: pw });
+                showToast('Locked backup saved on the computer:\n' + data.file, false);
+            } catch (e) {
+                showToast(e.message, true);
+            }
+        } finally {
+            backupBusy = false;
+        }
+    });
+
+    // Bottom sheet that lists the backups found on the computer
+    const sheet = document.getElementById('nameSheet');
+    const backdrop = document.getElementById('sheetBackdrop');
+    const sheetTitle = document.getElementById('sheetTitle');
+    const sheetList = document.getElementById('sheetList');
+
+    function closeSheet() {
+        sheet.classList.remove('open');
+        backdrop.classList.remove('open');
+    }
+
+    async function restoreBackup(pw, file) {
+        try {
+            let data;
+            try {
+                data = await api('POST', '/api/restore', { password: pw, file: file });
+            } catch (e) {
+                if (!(e.data && e.data.error === 'wrong-file-password')) throw e;
+                // Made with an older / different password: ask for that one
+                const ok = await askPassword({
+                    title: 'Different password',
+                    message: 'This backup was locked with a different password. Enter the password it was made with.',
+                    confirm: false,
+                    workingText: 'Unlocking…',
+                    submit: async function (filePw) {
+                        try { data = await api('POST', '/api/restore', { password: pw, file: file, filePassword: filePw }); }
+                        catch (e2) { return e2.message; }
+                        return null;
+                    }
+                });
+                if (!ok) return;
+            }
+            serverVersion = 0;
+            applyServerState(data);
+            showToast('Backup restored.', false);
+        } catch (e) {
+            showToast(e.message, true);
+        }
+    }
+
+    function openBackupSheet(pw, backups) {
+        sheetTitle.textContent = 'Choose a backup to restore';
+        sheetList.innerHTML = '';
+
+        backups.forEach(function (b) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'sheet-option';
+            btn.textContent = b.name + '  ·  ' + new Date(b.time).toLocaleString();
+            btn.style.fontSize = '15px';
+            btn.addEventListener('click', function () {
+                closeSheet();
+                showStep({
+                    title: 'Restore this backup?',
+                    message: b.name + ' will replace the current stock counts and item list.',
+                    okLabel: 'Restore',
+                    onOk: function () { restoreBackup(pw, b.name); }
+                });
+            });
+            sheetList.appendChild(btn);
+        });
+
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'sheet-option clear';
+        cancel.textContent = 'Cancel';
+        cancel.addEventListener('click', closeSheet);
+        sheetList.appendChild(cancel);
+
+        sheet.scrollTop = 0;
+        backdrop.classList.add('open');
+        sheet.classList.add('open');
+    }
+
+    document.getElementById('restoreBtn').addEventListener('click', async function () {
+        if (backupBusy) return;
+        backupBusy = true;
+        try {
+            const pw = await requirePassword('Enter the backup password to restore a backup.');
+            if (!pw) return;
+            let list;
+            try { list = (await api('GET', '/api/backups')).backups; }
+            catch (e) { showToast(e.message, true); return; }
+            if (!list || !list.length) {
+                showToast('No backups were found on the computer yet.', true);
+                return;
+            }
+            openBackupSheet(pw, list);
+        } finally {
+            backupBusy = false;
+        }
+    });
+
+    // =====================================================================
+    // NAME PICKER for INSPECTED / DELIVERED / ACCEPTED BY
+    // =====================================================================
+    let NAMES = ['Alex', 'Elliot', 'Malik', 'Emmet', 'Shaemus', 'Ricky']
+        .sort(function (a, b) { return a.localeCompare(b); });   // replaced by the list saved on the computer
+
+    function openSheet(line, title) {
+        sheetTitle.textContent = title;
+        sheetList.innerHTML = '';
+
+        NAMES.forEach(function (name) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'sheet-option';
+            btn.textContent = name;
+            btn.addEventListener('click', function () {
+                line.textContent = name;   // sits on top of the underline
+                closeSheet();
+            });
+            sheetList.appendChild(btn);
+        });
+
+        const clear = document.createElement('button');
+        clear.type = 'button';
+        clear.className = 'sheet-option clear';
+        clear.textContent = 'Clear';
+        clear.addEventListener('click', function () {
+            line.textContent = '';
+            closeSheet();
+        });
+        sheetList.appendChild(clear);
+
+        sheet.scrollTop = 0;
+        backdrop.classList.add('open');
+        sheet.classList.add('open');
+    }
+
+    document.querySelectorAll('.sig-block').forEach(function (block) {
+        const line = block.querySelector('.sig-line');
+        const title = block.querySelector('.sig-label').textContent.replace(':', '');
+        line.addEventListener('click', function () { openSheet(line, title); });
+        line.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openSheet(line, title);
+            }
+        });
+    });
+
+    backdrop.addEventListener('click', closeSheet);
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeSheet(); closeMatMenu(); }
+    });
+
+    // =====================================================================
+    // MATERIALS SUGGESTIONS: nothing until you type, then any word that matches
+    // =====================================================================
+    const matMenu = document.createElement('div');
+    matMenu.className = 'mat-menu';
+    document.body.appendChild(matMenu);
+
+    let activeInput = null;
+
+    function closeMatMenu() {
+        matMenu.classList.remove('open');
+        activeInput = null;
+    }
+
+    // Keeps the list inside the visible area (handles the on-screen keyboard)
+    function positionMatMenu() {
+        if (!activeInput || !matMenu.classList.contains('open')) return;
+
+        const rect = activeInput.getBoundingClientRect();
+        const vv = window.visualViewport;
+        const vTop = vv ? vv.offsetTop : 0;
+        const vHeight = vv ? vv.height : window.innerHeight;
+        const vWidth = document.documentElement.clientWidth;
+        const margin = 8;
+
+        const width = Math.min(vWidth - margin * 2, Math.max(rect.width, 280));
+        let left = rect.left;
+        if (left + width > vWidth - margin) left = vWidth - margin - width;
+        if (left < margin) left = margin;
+
+        const spaceBelow = vTop + vHeight - rect.bottom - margin;
+        const spaceAbove = rect.top - vTop - margin;
+        const placeBelow = spaceBelow >= 180 || spaceBelow >= spaceAbove;
+        const maxH = Math.max(110, Math.min(300, placeBelow ? spaceBelow : spaceAbove));
+
+        matMenu.style.width = width + 'px';
+        matMenu.style.maxHeight = maxH + 'px';
+        matMenu.style.left = (left + window.scrollX) + 'px';
+
+        if (placeBelow) {
+            matMenu.style.top = (rect.bottom + window.scrollY + 2) + 'px';
+        } else {
+            const h = Math.min(matMenu.scrollHeight, maxH);
+            matMenu.style.top = (rect.top + window.scrollY - h - 2) + 'px';
+        }
+    }
+
+    // Categories start collapsed. Typing expands every category that still has a matching item,
+    // each further letter removes the items (and categories) that no longer match, and the typed
+    // letters are highlighted. Tap a category heading to open or close it by hand.
+    // Flat list like Project Name: nothing shows until something is typed; every typed word must
+    // appear somewhere in the item name; matching words are highlighted; tap an item to pick it.
+    function showMatMenu(input) {
+        const text = input.value.trim();
+        if (!text) { closeMatMenu(); return; }   // nothing shows until the user starts typing
+        matMenu.innerHTML = '';
+
+        const items = [];
+        Object.keys(MATERIAL_CATALOG).forEach(function (section) {
+            MATERIAL_CATALOG[section].forEach(function (item) {
+                if (itemMatches(item, text) && items.indexOf(item) === -1) items.push(item);
+            });
+        });
+        items.sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+
+        items.forEach(function (item) {
+            const row = document.createElement('div');
+            row.className = 'mat-option';
+            row.style.cssText = 'font-size:14px;line-height:1.3;cursor:pointer';
+            const sp = document.createElement('span');
+            fillHighlighted(sp, item, text, 'mat-hl');
+            row.appendChild(sp);
+            row.addEventListener('click', function () {
+                input.value = item;
+                fitMat(input);
+                applyInvFilter();
+                autoAddRow();
+                closeMatMenu();
+                input.blur();   // hides the on-screen keyboard
+                refreshInventory();
+            });
+            matMenu.appendChild(row);
+        });
+
+        if (!items.length) {
+            const empty = document.createElement('div');
+            empty.className = 'mat-empty';
+            empty.textContent = 'No item matches "' + text + '"';
+            matMenu.appendChild(empty);
+        }
+
+        activeInput = input;
+        matMenu.classList.add('open');
+        positionMatMenu();
+    }
+
+    function bindMat(input) {
+        input.addEventListener('input', function () {
+            if (/[\r\n]/.test(input.value)) input.value = input.value.replace(/[\r\n]+/g, ' ');   // one line of text that wraps
+            fitMat(input);
+            matMenu.scrollTop = 0; invMatInput = input; showMatMenu(input); applyInvFilter();
+            autoAddRow();
+        });
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); closeMatMenu(); if (!addRowAfterEnter(input)) input.blur(); } });
+    }
+    document.querySelectorAll('.mat-input').forEach(bindMat);
+
+    // Tapping inside the list must not steal focus / dismiss the keyboard early
+    matMenu.addEventListener('pointerdown', function (e) {
+        if (e.pointerType !== 'mouse') e.preventDefault();
+    });
+
+    // Tap anywhere else closes the list
+    document.addEventListener('pointerdown', function (e) {
+        if (!matMenu.contains(e.target) && !e.target.classList.contains('mat-input')) {
+            closeMatMenu();
+        }
+    });
+
+    window.addEventListener('resize', positionMatMenu);
+    window.addEventListener('scroll', positionMatMenu, { passive: true });
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', positionMatMenu);
+        window.visualViewport.addEventListener('scroll', positionMatMenu);
+    }
+
+    // =====================================================================
+    // PROJECT NAME: pick from the list (typing filters it); admins add / remove entries
+    // =====================================================================
+    const projInput = document.getElementById('projectNameInput');
+    const projMenu = document.createElement('div');
+    projMenu.className = 'mat-menu';
+    document.body.appendChild(projMenu);
+
+    function closeProjMenu() { projMenu.classList.remove('open'); }
+    function showProjMenu() {
+        let q = projInput.value.trim().toLowerCase();
+        // clicking / touching the box (or a finished name) shows the whole list; typing narrows it
+        if (PROJECTS.some(function (p) { return p.toLowerCase() === q; })) q = '';
+        projMenu.innerHTML = '';
+        const hits = PROJECTS.filter(function (p) { return !q || p.toLowerCase().indexOf(q) !== -1; });
+        hits.forEach(function (p) {
+            const row = document.createElement('div');
+            row.className = 'mat-option';
+            row.style.cssText = 'font-size:14px;line-height:1.3';
+            const at = q ? p.toLowerCase().indexOf(q) : -1;
+            const sp = document.createElement('span');
+            if (at === -1) sp.textContent = p;
+            else {
+                sp.appendChild(document.createTextNode(p.slice(0, at)));
+                const m = document.createElement('mark'); m.className = 'mat-hl'; m.textContent = p.slice(at, at + q.length);
+                sp.appendChild(m);
+                sp.appendChild(document.createTextNode(p.slice(at + q.length)));
+            }
+            row.appendChild(sp);
+            row.addEventListener('click', function () { projInput.value = p; closeProjMenu(); projInput.blur(); });
+            projMenu.appendChild(row);
+        });
+        if (!hits.length) {
+            const e = document.createElement('div'); e.className = 'mat-empty';
+            e.textContent = 'No project matches "' + projInput.value.trim() + '"'; projMenu.appendChild(e);
+        }
+        const r = projInput.getBoundingClientRect();
+        const w = Math.min(document.documentElement.clientWidth - 16, Math.max(r.width, 360));
+        projMenu.style.width = w + 'px';
+        projMenu.style.left = Math.max(8, Math.min(r.left, document.documentElement.clientWidth - w - 8)) + window.scrollX + 'px';
+        projMenu.style.top = (r.bottom + window.scrollY + 2) + 'px';
+        projMenu.style.maxHeight = '280px';
+        projMenu.classList.add('open');
+    }
+    function fitProj() {
+        projInput.style.height = 'auto';
+        projInput.style.height = projInput.scrollHeight + 'px';
+    }
+    projInput.addEventListener('input', function () {
+        projInput.value = projInput.value.replace(/[\r\n]+/g, ' ');   // one line of text that wraps
+        fitProj(); showProjMenu();
+    });
+    projInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') e.preventDefault(); });
+    projInput.addEventListener('focus', showProjMenu);
+    projInput.addEventListener('click', showProjMenu);
+    window.addEventListener('resize', fitProj);
+    // programmatic changes (picking, clearing) re-fit as well
+    const projValueDesc = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value');
+    Object.defineProperty(projInput, 'value', {
+        get: function () { return projValueDesc.get.call(this); },
+        set: function (v) { projValueDesc.set.call(this, v); fitProj(); }
+    });
+    setTimeout(fitProj, 0);
+    document.addEventListener('pointerdown', function (e) {
+        if (e.target !== projInput && !projMenu.contains(e.target)) closeProjMenu();
+    });
+
+    // =====================================================================
+    // HIDDEN ADMIN SHORTCUTS (computers only, 10 seconds of hovering)
+    //   word "Return" (Return button)  -> reset the password without the old one
+    //   word "Stock" (Stock Room)      -> add / remove names for the signature lines
+    // =====================================================================
+    function onHoverTen(el, fn) {
+        let t = null;
+        el.addEventListener('mouseenter', function () {
+            if (document.documentElement.classList.contains('is-phone')) return;
+            clearTimeout(t);
+            t = setTimeout(function () { t = null; fn(); }, 10000);
+        });
+        el.addEventListener('mouseleave', function () { clearTimeout(t); t = null; });
+        el.addEventListener('click', function () { clearTimeout(t); t = null; });
+    }
+
+    async function resetPasswordDialog() {
+        if (anyDialogOpen()) return;
+        const ok = await askPassword({
+            title: 'Reset the password',
+            message: 'Type the new password. The old password is not needed. It is used for Add / Remove Category & item and for backups. Locked backups saved earlier still need the password they were saved with.',
+            confirm: true,
+            workingText: 'Saving…',
+            submit: async function (pw) {
+                try { await api('POST', '/api/password/reset', { password: pw }); }
+                catch (e) { return e.message; }
+                passwordSet = true;
+                return null;
+            }
+        });
+        if (ok) {
+            if (stockUnlocked) lockStock();
+            updateStatus();
+            showToast('The password was changed.', false);
+        }
+    }
+    onHoverTen(document.getElementById('modeReturn'), resetPasswordDialog);
+    // also the big title when it reads "Return Form"
+    onHoverTen(document.getElementById('formTitle'), function () { if (currentMode === 'return') resetPasswordDialog(); });
+
+    // =====================================================================
+    // PRINTER: the stock room computer prints a slip to the printer's IP address after every submit.
+    // The first time (no printer saved) a box asks for the address, after searching the network for it.
+    // Admins (computer only) can change it by keeping the mouse on the Submit button for 10 seconds.
+    // =====================================================================
+    let printAsked = false;
+    async function printerDialog(change) {
+        if (anyDialogOpen()) return false;
+        let pw = '';
+        if (change && passwordSet) {
+            pw = await requirePassword('Enter the password to change the printer address.');
+            if (!pw) return false;
+        }
+        let result = null;
+        pwInput.type = 'text';
+        pwInput.placeholder = 'Printer IP address';
+        const asking = askPassword({
+            title: change ? 'Change the printer' : 'Printer',
+            message: 'Searching the network for the printer…',
+            confirm: false,
+            emptyText: 'Type the printer IP address.',
+            workingText: 'Saving…',
+            submit: async function (ipText) {
+                try { result = await api('POST', '/api/printer/save', { ip: ipText, password: pw }); }
+                catch (e) { return e.message; }
+                return null;
+            }
+        });
+        // askPassword has opened the box; look for the printer while the person reads it
+        api('POST', '/api/printer/scan', {}).then(function (r) {
+            if (!pwModal.classList.contains('open')) return;
+            const found = r.found || [];
+            const hint = ' To stop printing while you test, type off instead. Type test to print a sample page. Add rawpdf after the address if the form does not print the first way.';
+            if (found.length === 1) pwMsg.textContent = 'Printer found at ' + found[0] + '. Press OK to use it.' + hint;
+            else if (found.length > 1) pwMsg.textContent = 'Printers found: ' + found.join(', ') + '. The first one is filled in. Change it if needed, then press OK.' + hint;
+            else pwMsg.textContent = 'No printer was found automatically. Type the printer IP address (it is on the printer\'s own settings or test page, for example 10.0.0.45).' + hint;
+            if (!pwInput.value) pwInput.value = found[0] || r.current || '';
+        }).catch(function () {
+            if (pwModal.classList.contains('open')) pwMsg.textContent = 'Type the printer IP address (for example 10.0.0.45).';
+        });
+        const ok = await asking;
+        pwInput.type = 'password';
+        pwInput.placeholder = 'Password';
+        if (ok && result) {
+            if (result.test) showToast('A test page was sent to the printer at ' + result.ip + '.', false);
+            else if (result.off) showToast('Printing is turned off. Type the printer address again (hover on the Submit button for 10 seconds) to turn it back on.', false);
+            else showToast('Printer saved: ' + result.ip + '.' + (result.model ? ' It answered as: ' + result.model + '.' : '') + (result.printer === 'printed' ? ' The waiting form was printed.' :
+                result.printer === 'failed' ? ' ' + result.printerMessage : ''), result.printer === 'failed');
+        }
+        return !!ok;
+    }
+    async function handlePrintResult(data) {
+        if (data.printer === 'unset') {
+            // phones are never asked: the form is saved and waits to be printed once the printer is set on the computer
+            if (document.documentElement.classList.contains('is-phone')) { showToast('Submitted. The printer is not set up yet, so it will print once the person in charge sets it on the stock room computer.', false); return; }
+            // never opens by itself: the printer address is only asked for when the mouse stays on the Submit button for 10 seconds
+            showToast('Submitted. No printer is set yet, so nothing was printed. To set it, keep the mouse on the Submit Delivery Form button for 10 seconds.', false);
+        } else if (data.printer === 'failed') {
+            showToast('Submitted, but it could not be printed. ' + (data.printerMessage || ''), true);
+        }
+    }
+    onHoverTen(submitBtn, function () { printerDialog(true); });
+
+    // Hidden shortcut: type the word "monday" anywhere on the page (not inside a box) on a computer
+    // -> backup password -> paste the monday.com API token. The token is saved on the stock room computer only.
+    async function mondayTokenDialog() {
+        if (anyDialogOpen()) return;
+        const pw = await requirePassword('Enter the password to change the monday.com connection.');
+        if (!pw) return;
+        let note = '';
+        pwInput.placeholder = 'API token';
+        const ok = await askPassword({
+            title: 'API token',
+            message: '',
+            confirm: false,
+            second: 'Board ID',
+            emptyText: 'Paste the API token.',
+            workingText: 'Checking with monday.com…',
+            submit: async function (token, boardId) {
+                try { const r = await api('POST', '/api/monday/save', { password: pw, token: token, boardId: boardId }); note = r.message || ''; }
+                catch (e) { return e.message; }
+                return null;
+            }
+        });
+        pwInput.placeholder = 'Password';
+        if (ok) showToast(note || 'The monday.com token was saved.', false);
+    }
+    let typedKeys = '';
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey || e.metaKey || e.altKey || document.documentElement.classList.contains('is-phone')) return;
+        const t = e.target;
+        if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) { typedKeys = ''; return; }
+        if (!e.key || e.key.length !== 1) return;
+        typedKeys = (typedKeys + e.key.toLowerCase()).slice(-6);
+        if (typedKeys === 'monday') { typedKeys = ''; mondayTokenDialog(); }
+    });
+
+    const nameModal = document.getElementById('nameModal');
+    const nameMsg = document.getElementById('nameMsg');
+    const nameNew = document.getElementById('nameNew');
+    let namePw = null;
+
+    function drawNameList() {
+        const box = document.getElementById('nameList');
+        box.innerHTML = '';
+        NAMES.forEach(function (n) {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:6px 2px;border-bottom:1px solid #eee';
+            const span = document.createElement('span'); span.textContent = n;
+            const rm = document.createElement('button');
+            rm.type = 'button'; rm.textContent = 'Remove'; rm.className = 'pw-cancel'; rm.style.cssText = 'padding:4px 10px;min-height:0';
+            rm.addEventListener('click', function () { changeName('/api/names/remove', n); });
+            row.appendChild(span); row.appendChild(rm); box.appendChild(row);
+        });
+    }
+
+    async function changeName(path, name) {
+        nameMsg.textContent = '';
+        try {
+            const data = await api('POST', path, { name: name, password: namePw });
+            if (Array.isArray(data.names)) NAMES = data.names.slice();
+            serverVersion = data.version;
+            nameNew.value = '';
+        } catch (e) { nameMsg.textContent = e.message; }
+        drawNameList();
+    }
+
+    document.getElementById('nameAdd').addEventListener('click', function () { changeName('/api/names/add', nameNew.value); nameNew.focus(); });
+    nameNew.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); changeName('/api/names/add', nameNew.value); } });
+    document.getElementById('nameDone').addEventListener('click', function () { nameModal.classList.remove('open'); namePw = null; });
+
+    onHoverTen(document.querySelector('#inventory h2'), async function () {
+        if (anyDialogOpen()) return;
+        const pw = await requirePassword('Enter the password to add or remove names on the signature lines.');
+        if (!pw) return;
+        namePw = pw; nameMsg.textContent = ''; nameNew.value = '';
+        drawNameList();
+        nameModal.classList.add('open');
+        setTimeout(function () { nameNew.focus(); }, 50);
+    });
+
+    // =====================================================================
+    // LOW-STOCK LEVEL PER ITEM (hidden, computers only)
+    // Move the mouse up out of the page (to the address bar) and keep it there for 10 seconds.
+    // After the password, each item can get its own level. Empty = the default level.
+    // =====================================================================
+    const thrModal = document.getElementById('thrModal');
+    const thrList = document.getElementById('thrList');
+    const thrMsg = document.getElementById('thrMsg');
+    let thrPw = null;
+
+    async function thresholdsDialog() {
+        if (anyDialogOpen()) return;
+        const pw = await requirePassword('Enter the password to set the low-stock level of each item.');
+        if (!pw) return;
+        let data;
+        try { data = await api('POST', '/api/thresholds/get', { password: pw }); }
+        catch (e) { showToast(e.message, true); return; }
+        thrPw = pw;
+        thrMsg.textContent = '';
+        document.getElementById('thrDefault').textContent = data.threshold;
+        thrList.innerHTML = '';
+        (data.items || []).forEach(function (name) {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 2px;border-bottom:1px solid #eee';
+            const span = document.createElement('span');
+            span.textContent = name;
+            span.style.cssText = 'flex:1;min-width:0;font-size:14px';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.inputMode = 'numeric';
+            input.className = 'pw-input thr-input';
+            input.style.cssText = 'width:90px;margin:0;text-align:center';
+            input.placeholder = String(data.threshold);
+            input.maxLength = 5;
+            input.setAttribute('data-item', name);
+            input.setAttribute('autocomplete', 'off');
+            if (data.thresholds && Object.prototype.hasOwnProperty.call(data.thresholds, name)) input.value = String(data.thresholds[name]);
+            row.appendChild(span);
+            row.appendChild(input);
+            thrList.appendChild(row);
+        });
+        thrModal.classList.add('open');
+    }
+
+    document.getElementById('thrCancel').addEventListener('click', function () { thrModal.classList.remove('open'); thrPw = null; });
+    document.getElementById('thrSave').addEventListener('click', async function () {
+        const out = {};
+        thrList.querySelectorAll('.thr-input').forEach(function (i) { out[i.getAttribute('data-item')] = i.value.trim(); });
+        const btn = document.getElementById('thrSave');
+        btn.disabled = true; thrMsg.textContent = 'Saving…';
+        try {
+            const data = await api('POST', '/api/thresholds/save', { password: thrPw, thresholds: out });
+            serverVersion = data.version;
+            thrModal.classList.remove('open'); thrPw = null;
+            showToast('The low-stock levels were saved.', false);
+        } catch (e) { thrMsg.textContent = e.message; }
+        btn.disabled = false;
+    });
+    thrModal.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); } });
+
+    // The all-items low-stock box is no longer opened by moving the mouse off the page. Levels are set by highlighting
+    // an item name on the monitor page (Stock on hand).
+
+    // =====================================================================
+    // START
+    // =====================================================================
+    // ---------- every pop-up box can be moved: drag it by any empty part (not a box, button or link) ----------
+    function makeDraggable(modal, boxSel, isOpen) {
+        const box = modal.querySelector(boxSel);
+        if (!box) return;
+        let dx = 0, dy = 0, cand = null, drag = null, moved = false;
+        function apply() { box.style.transform = dx || dy ? 'translate(' + dx + 'px,' + dy + 'px)' : ''; }
+        function reset() { dx = 0; dy = 0; apply(); }
+        new MutationObserver(function () { if (!isOpen()) reset(); }).observe(modal, { attributes: true, attributeFilter: ['class', 'hidden'] });
+        box.style.cursor = 'move';
+        const grip = document.createElement('div'); grip.className = 'pw-grip'; grip.textContent = '\u2630  Drag here to move this box'; grip.style.cssText = 'cursor:move;touch-action:none;user-select:none;text-align:center;font:600 12px sans-serif;color:#667;background:#eef1f6;border-radius:8px;padding:5px 8px;margin:-4px 0 8px'; box.insertBefore(grip, box.firstChild);
+        box.addEventListener('pointerdown', function (e) {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            const t = e.target;
+            if (t.closest('input, textarea, select, button, a, [contenteditable], .no-drag')) return;
+            if (e.pointerType === 'touch' && !t.closest('h3, .pw-title, .item-title, .pw-grip')) return;   // touch: by the title only, so lists still scroll
+            cand = { x: e.clientX, y: e.clientY, dx: dx, dy: dy, id: e.pointerId };
+        });
+        box.addEventListener('pointermove', function (e) {
+            if (!cand || e.pointerId !== cand.id) return;
+            if (!drag) {
+                if (Math.abs(e.clientX - cand.x) + Math.abs(e.clientY - cand.y) < 5) return;
+                drag = cand; moved = true;
+                try { box.setPointerCapture(e.pointerId); } catch (x) { /* ignore */ }
+                try { window.getSelection().removeAllRanges(); } catch (x) { /* ignore */ }
+            }
+            let nx = drag.dx + e.clientX - drag.x, ny = drag.dy + e.clientY - drag.y;
+            const r = box.getBoundingClientRect();
+            const bl = r.left - dx, bt = r.top - dy;                       // where the box sits without the move
+            nx = Math.min(Math.max(nx, 60 - r.width - bl), window.innerWidth - 60 - bl);   // keep a part of it on screen
+            ny = Math.min(Math.max(ny, -bt), window.innerHeight - 40 - bt);
+            dx = nx; dy = ny; apply();
+            e.preventDefault();
+        });
+        function end() { cand = null; drag = null; }
+        box.addEventListener('pointerup', end);
+        box.addEventListener('pointercancel', end);
+        box.addEventListener('click', function (e) { if (moved) { moved = false; e.stopPropagation(); e.preventDefault(); } }, true);
+    }
+    document.querySelectorAll('.pw-modal').forEach(function (m) {
+        makeDraggable(m, '.pw-box', function () { return m.classList.contains('open'); });
+    });
+
+    applyMode('delivery');
+    updateStatus();
+    loadState();
+</script>
+
+</body>
+</html>
